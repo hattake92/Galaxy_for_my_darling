@@ -54,7 +54,7 @@
             50% { opacity: 1; transform: scale(1.2); filter: blur(1px); }
         }
 
-        /* 5. Стили для звезд */
+        /* 4. Стили для звезд */
         .star {
             position: absolute;
             color: white;
@@ -84,7 +84,7 @@
             pointer-events: none;
         }
 
-        /* 6. Стили для окна с сообщением */
+        /* 5. Стили для окна с сообщением */
         #message-container {
             position: absolute;
             top: 50%;
@@ -116,6 +116,52 @@
             opacity: 1;
         }
 
+        /* 6. Стили для музыкального плеера */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(20, 20, 40, 0.85);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            z-index: 25;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        .music-control button {
+            background: rgba(100, 200, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .music-control button:hover {
+            background: rgba(100, 200, 255, 0.9);
+            transform: scale(1.05);
+        }
+
+        .volume-slider {
+            width: 120px;
+            height: 5px;
+            cursor: pointer;
+            accent-color: #64c8ff;
+        }
+
+        .music-info {
+            font-size: 12px;
+            color: #a0a6b0;
+            min-width: 80px;
+        }
+
     </style>
 </head>
 <body>
@@ -127,6 +173,18 @@
     <div id="message-container">
         <p id="message-text"></p>
     </div>
+
+    <!-- Музыкальный плеер -->
+    <div class="music-control">
+        <button id="music-toggle">🎵 Play</button>
+        <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="50">
+        <span class="music-info" id="music-info">50%</span>
+    </div>
+
+    <!-- Скрытый аудио элемент -->
+    <audio id="background-music" loop crossorigin="anonymous">
+        <source src="https://cdn.pixabay.com/download/audio/2023/05/12/audio_7215c3cfae.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         // Массив из 40 уникальных фраз
@@ -177,6 +235,33 @@
         const messageContainer = document.getElementById('message-container');
         const messageText = document.getElementById('message-text');
         const backgroundStarsContainer = document.getElementById('background-stars');
+
+        // Музыкальные элементы
+        const audio = document.getElementById('background-music');
+        const musicToggle = document.getElementById('music-toggle');
+        const volumeSlider = document.getElementById('volume-slider');
+        const musicInfo = document.getElementById('music-info');
+
+        // Инициализация музыки
+        audio.volume = 0.5;
+
+        // Переключение воспроизведения музыки
+        musicToggle.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play().catch(err => console.log('Не удалось воспроизвести музыку:', err));
+                musicToggle.textContent = '⏸ Pause';
+            } else {
+                audio.pause();
+                musicToggle.textContent = '🎵 Play';
+            }
+        });
+
+        // Контроль громкости
+        volumeSlider.addEventListener('input', (e) => {
+            const volume = e.target.value / 100;
+            audio.volume = volume;
+            musicInfo.textContent = Math.round(volume * 100) + '%';
+        });
 
         // Создаем фоновые далекие звезды
         function createBackgroundStars() {
@@ -240,6 +325,14 @@
         // Инициализация
         createBackgroundStars();
         createStars();
+
+        // Попытка автозапуска музыки
+        document.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play().catch(err => console.log('Не удалось воспроизвести музыку:', err));
+                musicToggle.textContent = '⏸ Pause';
+            }
+        }, { once: true });
     </script>
 </body>
 </html>
