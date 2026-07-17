@@ -54,43 +54,6 @@
             50% { opacity: 1; transform: scale(1.2); filter: blur(1px); }
         }
 
-        /* 4. Анимация падающей кометы */
-        @keyframes comet-fall {
-            0% {
-                top: -10%;
-                left: 80%;
-                opacity: 1;
-            }
-            100% {
-                top: 110%;
-                left: 10%;
-                opacity: 0;
-            }
-        }
-
-        .comet {
-            position: fixed;
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ffff99, #ffff99, transparent);
-            box-shadow: 0 0 20px #ffff99, 0 0 40px #ffaa00;
-            transform: rotate(45deg);
-            animation: comet-fall 4s linear infinite;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        .comet::before {
-            content: '';
-            position: absolute;
-            right: -50px;
-            top: -20px;
-            width: 60px;
-            height: 40px;
-            background: radial-gradient(ellipse at center, rgba(255, 255, 153, 0.5) 0%, transparent 70%);
-            filter: blur(10px);
-        }
-
         /* 5. Стили для звезд */
         .star {
             position: absolute;
@@ -159,10 +122,6 @@
 
     <!-- Фоновые мерцающие звезды -->
     <div class="background-stars" id="background-stars"></div>
-
-    <!-- Падающая комета -->
-    <div class="comet"></div>
-    <div class="comet" style="animation-delay: 2s;"></div>
 
     <!-- Контейнер для сообщений -->
     <div id="message-container">
