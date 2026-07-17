@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { margin: 0; background: #0b0d17; color: white; font-family: sans-serif; overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .star { position: absolute; width: 8px; height: 8px; background: white; border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px white; transition: transform 0.3s; }
+        .star:hover { transform: scale(1.5); }
+        #message { position: absolute; top: 20%; font-size: 1.5rem; opacity: 0; transition: opacity 0.5s; text-align: center; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+<div id="message"></div>
+
+<script>
+    const messages = ["Ты — моё счастье", "Твоя улыбка — лучшее, что я видел", "Сабина, ты чудо", "Люблю тебя бесконечно"];
+    const messageDisplay = document.getElementById('message');
+
+    // Создаем звезды
+    for (let i = 0; i < 20; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = Math.random() * 100 + 'vh';
+        
+        star.onclick = () => {
+            messageDisplay.innerText = messages[Math.floor(Math.random() * messages.length)];
+            messageDisplay.style.opacity = 1;
+            setTimeout(() => { messageDisplay.style.opacity = 0; }, 2000);
+        };
+        document.body.appendChild(star);
+    }
+</script>
+</body>
+</html>
