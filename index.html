@@ -128,11 +128,6 @@
         <p id="message-text"></p>
     </div>
 
-    <!-- Скрытый аудио элемент с калм музыкой -->
-    <audio id="background-music" loop muted>
-        <source src="https://assets.mixkit.co/active_storage/audios/43903/43903-preview.mp3" type="audio/mpeg">
-    </audio>
-
     <script>
         // Массив из 40 уникальных фраз
         const messages = [
@@ -182,30 +177,88 @@
         const messageContainer = document.getElementById('message-container');
         const messageText = document.getElementById('message-text');
         const backgroundStarsContainer = document.getElementById('background-stars');
-        const audio = document.getElementById('background-music');
 
-        // Установка громкости
-        audio.volume = 0.3;
+        // ===== WEB AUDIO API - Генерируем спокойную фоновую музыку =====
+        let audioContext;
+        let masterGain;
+        let oscillators = [];
+        let isAudioStarted = false;
 
-        // Запуск музыки при первом взаимодействии
-        function startMusic() {
-            audio.muted = false;
-            audio.play().catch(err => console.log('Автоприветствие музыки:', err));
+        function initAudioContext() {
+            if (isAudioStarted) return;
+            
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = audioContext.createGain();
+            masterGain.connect(audioContext.destination);
+            masterGain.gain.value = 0.2; // Тихий фон (20% громкости)
+            
+            isAudioStarted = true;
+            startCalmMusic();
         }
 
-        // Слушаем первый клик
-        document.addEventListener('click', startMusic, { once: true });
-        document.addEventListener('touchstart', startMusic, { once: true });
+        function createOscillatorNote(frequency, startTime, duration, volume = 0.1) {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(masterGain);
+            
+            osc.frequency.value = frequency;
+            osc.type = 'sine'; // Мягкий синусовый звук
+            
+            // Плавная огибающая (ADSR-подобная)
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(volume, startTime + 0.3);
+            gain.gain.linearRampToValueAtTime(volume * 0.5, startTime + duration - 0.3);
+            gain.gain.linearRampToValueAtTime(0, startTime + duration);
+            
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+            
+            return osc;
+        }
 
-        // Попробуем запустить при загрузке страницы
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                audio.muted = false;
-                audio.play().catch(() => {
-                    console.log('Требуется взаимодействие пользователя');
-                });
-            }, 500);
-        });
+        function startCalmMusic() {
+            if (!audioContext) return;
+            
+            // Основные ноты аккордов (спокойная прогрессия)
+            const chords = [
+                [130.81, 164.81, 196.00], // C minor
+                [130.81, 155.56, 196.00], // C minor
+                [146.83, 174.61, 220.00], // D minor
+                [130.81, 164.81, 196.00]  // C minor
+            ];
+            
+            let currentTime = audioContext.currentTime;
+            const beatDuration = 2; // Каждая нота длится 2 секунды
+            let chordIndex = 0;
+            
+            // Функция для создания бесконечного цикла музыки
+            function playMusicLoop() {
+                if (audioContext.state === 'running') {
+                    const chord = chords[chordIndex % chords.length];
+                    
+                    // Воспроизводим все ноты аккорда одновременно
+                    for (let freq of chord) {
+                        createOscillatorNote(freq, audioContext.currentTime, beatDuration, 0.08);
+                    }
+                    
+                    chordIndex++;
+                    
+                    // Запланируем следующий проигрыш
+                    setTimeout(playMusicLoop, beatDuration * 1000);
+                }
+            }
+            
+            playMusicLoop();
+        }
+
+        // Инициализируем аудио при загрузке страницы
+        window.addEventListener('load', initAudioContext);
+        
+        // Также инициализируем при первом клике (для некоторых браузеров)
+        document.addEventListener('click', initAudioContext, { once: true });
+        document.addEventListener('touchstart', initAudioContext, { once: true });
 
         // Создаем фоновые далекие звезды
         function createBackgroundStars() {
