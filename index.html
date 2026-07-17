@@ -128,9 +128,9 @@
         <p id="message-text"></p>
     </div>
 
-    <!-- Скрытый аудио элемент -->
-    <audio id="background-music" loop autoplay>
-        <source src="data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==" type="audio/wav">
+    <!-- Скрытый аудио элемент с калм музыкой -->
+    <audio id="background-music" loop muted>
+        <source src="https://assets.mixkit.co/active_storage/audios/43903/43903-preview.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -184,70 +184,28 @@
         const backgroundStarsContainer = document.getElementById('background-stars');
         const audio = document.getElementById('background-music');
 
-        // Генерируем простую спокойную музыку с использованием Web Audio API
-        function generateCalmMusic() {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const masterGain = audioContext.createGain();
-            masterGain.connect(audioContext.destination);
-            masterGain.gain.value = 0.3; // Тихий фон
-
-            // Создаем спокойные тоны
-            const notes = [264, 297, 330, 352]; // Нежные ноты (до, ре, ми, фа)
-            let currentTime = audioContext.currentTime;
-
-            // Повторяющийся цикл мягких нот
-            for (let i = 0; i < 20; i++) {
-                const freq = notes[i % notes.length];
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-
-                osc.connect(gain);
-                gain.connect(masterGain);
-
-                osc.frequency.value = freq;
-                osc.type = 'sine'; // Синусовая волна - мягкий звук
-
-                // Плавная огибающая для каждой ноты
-                gain.gain.setValueAtTime(0, currentTime);
-                gain.gain.linearRampToValueAtTime(0.1, currentTime + 0.5);
-                gain.gain.linearRampToValueAtTime(0, currentTime + 2);
-
-                osc.start(currentTime);
-                osc.stop(currentTime + 2);
-
-                currentTime += 1.5;
-            }
-
-            // Берем первые несколько секунд в виде данных
-            return audioContext;
-        }
-
-        // Установка начальной громкости
+        // Установка громкости
         audio.volume = 0.3;
 
-        // Попытка воспроизведения музыки при загрузке страницы
-        document.addEventListener('DOMContentLoaded', () => {
-            // Генерируем спокойную музыку
-            try {
-                generateCalmMusic();
-            } catch (e) {
-                console.log('Web Audio API не доступен');
-            }
+        // Запуск музыки при первом взаимодействии
+        function startMusic() {
+            audio.muted = false;
+            audio.play().catch(err => console.log('Автоприветствие музыки:', err));
+        }
 
-            // Попробуем воспроизвести встроенный аудио элемент
-            audio.play().catch(() => {
-                console.log('Автовоспроизведение требует взаимодействия пользователя');
-            });
-        });
+        // Слушаем первый клик
+        document.addEventListener('click', startMusic, { once: true });
+        document.addEventListener('touchstart', startMusic, { once: true });
 
-        // Также попробуем при первом клике
-        document.addEventListener('click', () => {
-            if (audio.paused) {
+        // Попробуем запустить при загрузке страницы
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                audio.muted = false;
                 audio.play().catch(() => {
-                    console.log('Ошибка воспроизведения');
+                    console.log('Требуется взаимодействие пользователя');
                 });
-            }
-        }, { once: true });
+            }, 500);
+        });
 
         // Создаем фоновые далекие звезды
         function createBackgroundStars() {
