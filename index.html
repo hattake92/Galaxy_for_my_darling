@@ -7,10 +7,14 @@
     <style>
         body {
             margin: 0; padding: 0; height: 100vh; overflow: hidden;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><defs><radialGradient id="nebula1" cx="20%" cy="40%"><stop offset="0%" style="stop-color:%2300ff99;stop-opacity:0.3"/><stop offset="100%" style="stop-color:%23001a33;stop-opacity:0.1"/></radialGradient><radialGradient id="nebula2" cx="80%" cy="60%"><stop offset="0%" style="stop-color:%2300ccff;stop-opacity:0.2"/><stop offset="100%" style="stop-color:%23001a33;stop-opacity:0.1"/></radialGradient></defs><rect width="1920" height="1080" fill="%23000a15"/><circle cx="400" cy="400" r="500" fill="url(%23nebula1)"/><circle cx="1600" cy="700" r="600" fill="url(%23nebula2)"/></svg>');
-            background-size: cover; background-position: center; background-attachment: fixed;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff;
-            display: flex; justify-content: center; align-items: center; position: relative;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* Видео как фон */
+        #bg-video {
+            position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%;
+            width: auto; height: auto; z-index: -1; object-fit: cover;
         }
 
         .background-stars { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
@@ -22,17 +26,20 @@
         .star:hover { transform: scale(2) !important; opacity: 1 !important; color: #ffe600; text-shadow: 0 0 10px #ffe600, 0 0 20px #ffcc00; }
         .star.hidden { animation: none; opacity: 0; transform: scale(0); transition: all 0.5s ease-out; pointer-events: none; }
 
-        #message-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(20, 20, 40, 0.9); padding: 30px 40px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); text-align: center; max-width: 80%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: opacity 0.5s ease-in-out; z-index: 20; }
+        #message-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(20, 20, 40, 0.8); padding: 30px 40px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); text-align: center; max-width: 80%; opacity: 0; pointer-events: none; transition: opacity 0.5s ease-in-out; z-index: 20; }
         #message-text { font-size: 1.5rem; line-height: 1.6; color: #e0e6ed; margin: 0; }
         #message-container.show { opacity: 1; }
-
-        /* Кнопка управления звуком */
+        
         #mute-btn { position: absolute; bottom: 20px; right: 20px; z-index: 30; background: rgba(255,255,255,0.1); border: 1px solid white; color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" loop>
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="background.mp4" type="video/mp4">
+    </video>
+
+    <audio id="bg-music" loop preload="auto">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
@@ -41,31 +48,20 @@
     <div id="message-container"><p id="message-text"></p></div>
 
     <script>
-        const messages = [
-            "Сабинка, ты моё самое большое вдохновение.", "Твоя улыбка освещает мой день.", "Ты — моё счастье каждый день.",
-            "С тобой время останавливается.", "Твой смех — моя любимая музыка.", "Ты невероятно чуткая и добрая.",
-            "Рядом с тобой я чувствую себя дома.", "Ты — лучшее, что случилось со мной.", "Твои глаза — целый мир.",
-            "Я восхищаюсь твоим умом.", "Ты делаешь мою жизнь ярче.", "Ты — мой самый близкий человек.",
-            "Твоя нежность бесценна.", "Я благодарен судьбе за встречу с тобой.", "Ты — моё прекрасное приключение.",
-            "С тобой легко и уютно.", "Ты невероятно красивая.", "Твоя поддержка для меня всё.",
-            "Я люблю твою искренность.", "Ты — мой островок спокойствия.", "Твой голос меня успокаивает.",
-            "Ты умеешь видеть красоту в мелочах.", "Я ценю каждый миг с тобой.", "Ты — моё самое важное чудо.",
-            "Твои объятия — самое лучшее место.", "Ты наполняешь мою жизнь смыслом.",
-            "С тобой я становлюсь лучше.", "Ты — моё идеальное отражение.",
-            "Твой взгляд меня окрыляет.", "Ты — самый родной человечек.", "Ты — мой свет в темноте.", "С тобой любые проблемы уходят.", "Ты — моё самое ценное сокровище.",
-            "Я счастлив, что ты у меня есть.", "Сабинка, ты — само совершенство.",
-            "С тобой даже обычный день становится праздником.", "Ты понимаешь меня без слов.",
-            "Ты делаешь мир вокруг добрее.", "У тебя самое доброе сердце на свете.",
-            "Ты — моё вдохновение в каждой мысли.", "Спасибо, что ты просто есть."
-        ];
+        const messages = ["Сабинка, ты моё самое большое вдохновение.", "Твоя улыбка освещает мой день.", "Ты — моё счастье каждый день.", "С тобой время останавливается.", "Твой смех — моя любимая музыка.", "Ты невероятно чуткая и добрая.", "Рядом с тобой я чувствую себя дома.", "Ты — лучшее, что случилось со мной.", "Твои глаза — целый мир.", "Я восхищаюсь твоим умом.", "Ты делаешь мою жизнь ярче.", "Ты — мой самый близкий человек.", "Твоя нежность бесценна.", "Я благодарен судьбе за встречу с тобой.", "Ты — моё прекрасное приключение.", "С тобой легко и уютно.", "Ты невероятно красивая.", "Твоя поддержка для меня всё.", "Я люблю твою искренность.", "Ты — мой островок спокойствия.", "Твой голос меня успокаивает.", "Ты умеешь видеть красоту в мелочах.", "Я ценю каждый миг с тобой.", "Ты — моё самое важное чудо.", "Твои объятия — самое лучшее место.", "Ты наполняешь мою жизнь смыслом.", "С тобой я становлюсь лучше.", "Ты — моё идеальное отражение.", "Твой взгляд меня окрыляет.", "Ты — самый родной человечек.", "Ты — мой свет в темноте.", "С тобой любые проблемы уходят.", "Ты — моё самое ценное сокровище.", "Я счастлив, что ты у меня есть.", "Сабинка, ты — само совершенство.", "С тобой даже обычный день становится праздником.", "Ты понимаешь меня без слов.", "Ты делаешь мир вокруг добрее.", "У тебя самое доброе сердце на свете.", "Ты — моё вдохновение в каждой мысли.", "Спасибо, что ты просто есть."];
 
         const music = document.getElementById('bg-music');
         const muteBtn = document.getElementById('mute-btn');
         let isPlaying = false;
 
         muteBtn.onclick = () => {
-            if (isPlaying) { music.pause(); muteBtn.innerText = "Музыка: Выкл"; }
-            else { music.play(); muteBtn.innerText = "Музыка: Вкл"; }
+            if (isPlaying) { 
+                music.pause(); 
+                muteBtn.innerText = "Музыка: Выкл"; 
+            } else { 
+                music.play().catch(e => console.log(e)); 
+                muteBtn.innerText = "Музыка: Вкл"; 
+            }
             isPlaying = !isPlaying;
         };
 
