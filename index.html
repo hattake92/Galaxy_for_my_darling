@@ -5,321 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Для Сабинки</title>
     <style>
-        /* 1. Глубокий космический фон с реальным изображением */
         body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden;
+            margin: 0; padding: 0; height: 100vh; overflow: hidden;
             background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><defs><radialGradient id="nebula1" cx="20%" cy="40%"><stop offset="0%" style="stop-color:%2300ff99;stop-opacity:0.3"/><stop offset="100%" style="stop-color:%23001a33;stop-opacity:0.1"/></radialGradient><radialGradient id="nebula2" cx="80%" cy="60%"><stop offset="0%" style="stop-color:%2300ccff;stop-opacity:0.2"/><stop offset="100%" style="stop-color:%23001a33;stop-opacity:0.1"/></radialGradient></defs><rect width="1920" height="1080" fill="%23000a15"/><circle cx="400" cy="400" r="500" fill="url(%23nebula1)"/><circle cx="1600" cy="700" r="600" fill="url(%23nebula2)"/></svg>');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
+            background-size: cover; background-position: center; background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff;
+            display: flex; justify-content: center; align-items: center; position: relative;
         }
 
-        /* 2. Фоновые мерцающие звезды (далекие звезды) */
-        .background-stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
+        .background-stars { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .background-star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0.4; animation: distant-twinkle 4s infinite ease-in-out; }
+        @keyframes distant-twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
 
-        .background-star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.4;
-            animation: distant-twinkle 4s infinite ease-in-out;
-            box-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
-        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(1); filter: blur(0px); } 50% { opacity: 1; transform: scale(1.2); filter: blur(1px); } }
+        .star { position: absolute; color: white; font-size: 15px; cursor: pointer; user-select: none; animation: twinkle 3s infinite ease-in-out; text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #4da6ff; transition: transform 0.3s, opacity 0.3s; z-index: 10; }
+        .star:hover { transform: scale(2) !important; opacity: 1 !important; color: #ffe600; text-shadow: 0 0 10px #ffe600, 0 0 20px #ffcc00; }
+        .star.hidden { animation: none; opacity: 0; transform: scale(0); transition: all 0.5s ease-out; pointer-events: none; }
 
-        @keyframes distant-twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.8; }
-        }
+        #message-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(20, 20, 40, 0.9); padding: 30px 40px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); text-align: center; max-width: 80%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: opacity 0.5s ease-in-out; z-index: 20; }
+        #message-text { font-size: 1.5rem; line-height: 1.6; color: #e0e6ed; margin: 0; }
+        #message-container.show { opacity: 1; }
 
-        /* 3. Анимация мерцания и свечения основных звезд */
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(1); filter: blur(0px); }
-            50% { opacity: 1; transform: scale(1.2); filter: blur(1px); }
-        }
-
-        /* 4. Стили для звезд */
-        .star {
-            position: absolute;
-            color: white;
-            font-size: 15px; 
-            cursor: pointer;
-            user-select: none;
-            animation: twinkle 3s infinite ease-in-out;
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #4da6ff;
-            transition: transform 0.3s, opacity 0.3s;
-            z-index: 10;
-        }
-
-        /* Эффект при наведении мышкой */
-        .star:hover {
-            transform: scale(2) !important;
-            opacity: 1 !important;
-            color: #ffe600;
-            text-shadow: 0 0 10px #ffe600, 0 0 20px #ffcc00;
-        }
-
-        /* Эффект исчезновения после клика */
-        .star.hidden {
-            animation: none;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.5s ease-out;
-            pointer-events: none;
-        }
-
-        /* 5. Стили для окна с сообщением */
-        #message-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(20, 20, 40, 0.9);
-            padding: 30px 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            text-align: center;
-            max-width: 80%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease-in-out;
-            z-index: 20;
-        }
-
-        #message-text {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            color: #e0e6ed;
-            margin: 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        #message-container.show {
-            opacity: 1;
-        }
-
+        /* Кнопка управления звуком */
+        #mute-btn { position: absolute; bottom: 20px; right: 20px; z-index: 30; background: rgba(255,255,255,0.1); border: 1px solid white; color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- Фоновые мерцающие звезды -->
-    <div class="background-stars" id="background-stars"></div>
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
-    <!-- Контейнер для сообщений -->
-    <div id="message-container">
-        <p id="message-text"></p>
-    </div>
+    <div id="mute-btn">Музыка: Выкл</div>
+    <div class="background-stars" id="background-stars"></div>
+    <div id="message-container"><p id="message-text"></p></div>
 
     <script>
-        // Массив из 40 уникальных фраз
         const messages = [
-            "Сабинка, ты моё самое большое вдохновение.",
-            "Твоя улыбка освещает мой день.",
-            "Ты — моё счастье каждый день.",
-            "С тобой время останавливается.",
-            "Твой смех — моя любимая музыка.",
-            "Ты невероятно чуткая и добрая.",
-            "Рядом с тобой я чувствую себя дома.",
-            "Ты — лучшее, что случилось со мной.",
-            "Твои глаза — целый мир.",
-            "Я восхищаюсь твоим умом.",
-            "Ты делаешь мою жизнь ярче.",
-            "Ты — мой самый близкий человек.",
-            "Твоя нежность бесценна.",
-            "Я благодарен судьбе за встречу с тобой.",
-            "Ты — моё прекрасное приключение.",
-            "С тобой легко и уютно.",
-            "Ты невероятно красивая.",
-            "Твоя поддержка для меня всё.",
-            "Я люблю твою искренность.",
-            "Ты — мой островок спокойствия.",
-            "Твой голос меня успокаивает.",
-            "Ты умеешь видеть красоту в мелочах.",
-            "Я ценю каждый миг с тобой.",
-            "Ты — моё самое важное чудо.",
-            "Твои объятия — самое лучшее место.",
-            "Ты наполняешь мою жизнь смыслом.",
-            "С тобой я становлюсь лучше.",
-            "Ты — моё идеальное отражение.",
-            "Твой взгляд меня окрыляет.",
-            "Ты — самый родной человечек.",
-            "Ты — мой свет в темноте.",
-            "С тобой любые проблемы уходят.",
-            "Ты — моё самое ценное сокровище.",
-            "Я счастлив, что ты у меня есть.",
-            "Сабинка, ты — само совершенство.",
-            "С тобой даже обычный день становится праздником.",
-            "Ты понимаешь меня без слов.",
-            "Ты делаешь мир вокруг добрее.",
-            "У тебя самое доброе сердце на свете.",
-            "Ты — моё вдохновение в каждой мысли."
+            "Сабинка, ты моё самое большое вдохновение.", "Твоя улыбка освещает мой день.", "Ты — моё счастье каждый день.",
+            "С тобой время останавливается.", "Твой смех — моя любимая музыка.", "Ты невероятно чуткая и добрая.",
+            "Рядом с тобой я чувствую себя дома.", "Ты — лучшее, что случилось со мной.", "Твои глаза — целый мир.",
+            "Я восхищаюсь твоим умом.", "Ты делаешь мою жизнь ярче.", "Ты — мой самый близкий человек.",
+            "Твоя нежность бесценна.", "Я благодарен судьбе за встречу с тобой.", "Ты — моё прекрасное приключение.",
+            "С тобой легко и уютно.", "Ты невероятно красивая.", "Твоя поддержка для меня всё.",
+            "Я люблю твою искренность.", "Ты — мой островок спокойствия.", "Твой голос меня успокаивает.",
+            "Ты умеешь видеть красоту в мелочах.", "Я ценю каждый миг с тобой.", "Ты — моё самое важное чудо.",
+            "Твои объятия — самое лучшее место.", "Ты наполняешь мою жизнь смыслом.",
+            "С тобой я становлюсь лучше.", "Ты — моё идеальное отражение.",
+            "Твой взгляд меня окрыляет.", "Ты — самый родной человечек.", "Ты — мой свет в темноте.", "С тобой любые проблемы уходят.", "Ты — моё самое ценное сокровище.",
+            "Я счастлив, что ты у меня есть.", "Сабинка, ты — само совершенство.",
+            "С тобой даже обычный день становится праздником.", "Ты понимаешь меня без слов.",
+            "Ты делаешь мир вокруг добрее.", "У тебя самое доброе сердце на свете.",
+            "Ты — моё вдохновение в каждой мысли.", "Спасибо, что ты просто есть."
         ];
 
-        const container = document.body;
-        const messageContainer = document.getElementById('message-container');
-        const messageText = document.getElementById('message-text');
-        const backgroundStarsContainer = document.getElementById('background-stars');
+        const music = document.getElementById('bg-music');
+        const muteBtn = document.getElementById('mute-btn');
+        let isPlaying = false;
 
-        // ===== WEB AUDIO API - Генерируем спокойную фоновую музыку =====
-        let audioContext;
-        let masterGain;
-        let oscillators = [];
-        let isAudioStarted = false;
+        muteBtn.onclick = () => {
+            if (isPlaying) { music.pause(); muteBtn.innerText = "Музыка: Выкл"; }
+            else { music.play(); muteBtn.innerText = "Музыка: Вкл"; }
+            isPlaying = !isPlaying;
+        };
 
-        function initAudioContext() {
-            if (isAudioStarted) return;
-            
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            masterGain = audioContext.createGain();
-            masterGain.connect(audioContext.destination);
-            masterGain.gain.value = 0.2; // Тихий фон (20% громкости)
-            
-            isAudioStarted = true;
-            startCalmMusic();
-        }
-
-        function createOscillatorNote(frequency, startTime, duration, volume = 0.1) {
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            
-            osc.connect(gain);
-            gain.connect(masterGain);
-            
-            osc.frequency.value = frequency;
-            osc.type = 'sine'; // Мягкий синусовый звук
-            
-            // Плавная огибающая (ADSR-подобная)
-            gain.gain.setValueAtTime(0, startTime);
-            gain.gain.linearRampToValueAtTime(volume, startTime + 0.3);
-            gain.gain.linearRampToValueAtTime(volume * 0.5, startTime + duration - 0.3);
-            gain.gain.linearRampToValueAtTime(0, startTime + duration);
-            
-            osc.start(startTime);
-            osc.stop(startTime + duration);
-            
-            return osc;
-        }
-
-        function startCalmMusic() {
-            if (!audioContext) return;
-            
-            // Основные ноты аккордов (спокойная прогрессия)
-            const chords = [
-                [130.81, 164.81, 196.00], // C minor
-                [130.81, 155.56, 196.00], // C minor
-                [146.83, 174.61, 220.00], // D minor
-                [130.81, 164.81, 196.00]  // C minor
-            ];
-            
-            let currentTime = audioContext.currentTime;
-            const beatDuration = 2; // Каждая нота длится 2 секунды
-            let chordIndex = 0;
-            
-            // Функция для создания бесконечного цикла музыки
-            function playMusicLoop() {
-                if (audioContext.state === 'running') {
-                    const chord = chords[chordIndex % chords.length];
-                    
-                    // Воспроизводим все ноты аккорда одновременно
-                    for (let freq of chord) {
-                        createOscillatorNote(freq, audioContext.currentTime, beatDuration, 0.08);
-                    }
-                    
-                    chordIndex++;
-                    
-                    // Запланируем следующий проигрыш
-                    setTimeout(playMusicLoop, beatDuration * 1000);
-                }
-            }
-            
-            playMusicLoop();
-        }
-
-        // Инициализируем аудио при загрузке страницы
-        window.addEventListener('load', initAudioContext);
-        
-        // Также инициализируем при первом клике (для некоторых браузеров)
-        document.addEventListener('click', initAudioContext, { once: true });
-        document.addEventListener('touchstart', initAudioContext, { once: true });
-
-        // Создаем фоновые далекие звезды
         function createBackgroundStars() {
+            const container = document.getElementById('background-stars');
             for (let i = 0; i < 150; i++) {
                 const star = document.createElement('div');
                 star.className = 'background-star';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
-                star.style.width = (Math.random() * 3 + 0.5) + 'px';
-                star.style.height = star.style.width;
                 star.style.animationDelay = Math.random() * 4 + 's';
-                backgroundStarsContainer.appendChild(star);
-            }
-        }
-
-        // Создаем интерактивные звезды (по одной на каждую фразу)
-        function createStars() {
-            const starCount = messages.length;
-
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                // Случайная позиция
-                star.style.left = Math.random() * 98 + 'vw';
-                star.style.top = Math.random() * 98 + 'vh';
-                
-                // Случайный размер звезды
-                star.style.fontSize = (Math.random() * 12 + 10) + 'px';
-                
-                // Случайная задержка анимации
-                star.style.animationDelay = Math.random() * 3 + 's';
-                
-                // Символ звезды
-                star.innerHTML = '★';
-
-                // Привязываем уникальную фразу к этой звезде
-                star.onclick = () => showMessage(star, i);
-
                 container.appendChild(star);
             }
         }
 
-        let hideTimeout;
-
-        function showMessage(starElement, index) {
-            // Показываем текст
-            messageText.innerText = messages[index];
-            messageContainer.classList.add('show');
-
-            // Звезда исчезает
-            starElement.classList.add('hidden');
-
-            // Скрываем сообщение через 4 секунды
-            clearTimeout(hideTimeout);
-            hideTimeout = setTimeout(() => {
-                messageContainer.classList.remove('show');
-            }, 4000);
+        function createStars() {
+            const container = document.body;
+            messages.forEach((msg, i) => {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 98 + 'vw';
+                star.style.top = Math.random() * 98 + 'vh';
+                star.innerHTML = '★';
+                star.onclick = () => {
+                    document.getElementById('message-text').innerText = msg;
+                    document.getElementById('message-container').classList.add('show');
+                    star.classList.add('hidden');
+                    setTimeout(() => document.getElementById('message-container').classList.remove('show'), 4000);
+                };
+                container.appendChild(star);
+            });
         }
 
-        // Инициализация
         createBackgroundStars();
         createStars();
     </script>
