@@ -5,46 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Для Сабинки</title>
     <style>
-        /* 1. Глубокий космический фон */
+        /* 1. Глубокий космический фон с эффектом туманности */
         body {
             margin: 0;
             padding: 0;
             height: 100vh;
             overflow: hidden;
-            background: radial-gradient(circle at center, #1a1f3c 0%, #030510 100%);
+            background: radial-gradient(circle at 30% 50%, rgba(30, 60, 120, 0.3) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 30%, rgba(120, 30, 80, 0.2) 0%, transparent 40%),
+                        radial-gradient(circle at center, #1a1f3c 0%, #0a0e1a 50%, #030510 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
-        /* 2. Анимация мерцания и свечения */
+        /* 2. Фоновые мерцающие звезды (далекие звезды) */
+        .background-stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .background-star {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: distant-twinkle 4s infinite ease-in-out;
+        }
+
+        @keyframes distant-twinkle {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* 3. Анимация мерцания и свечения основных звезд */
         @keyframes twinkle {
             0%, 100% { opacity: 0.2; transform: scale(1); filter: blur(0px); }
             50% { opacity: 1; transform: scale(1.2); filter: blur(1px); }
         }
 
-        /* 3. Стили для звезд */
+        /* 4. Анимация падающей кометы */
+        @keyframes comet-fall {
+            0% {
+                top: -10%;
+                left: 80%;
+                opacity: 1;
+            }
+            100% {
+                top: 110%;
+                left: 10%;
+                opacity: 0;
+            }
+        }
+
+        .comet {
+            position: fixed;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffff99, #ffff99, transparent);
+            box-shadow: 0 0 20px #ffff99, 0 0 40px #ffaa00;
+            transform: rotate(45deg);
+            animation: comet-fall 4s linear infinite;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .comet::before {
+            content: '';
+            position: absolute;
+            right: -50px;
+            top: -20px;
+            width: 60px;
+            height: 40px;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 153, 0.5) 0%, transparent 70%);
+            filter: blur(10px);
+        }
+
+        /* 5. Стили для звезд */
         .star {
             position: absolute;
             color: white;
-            /* Используем символ звездочки вместо кружка */
             font-size: 15px; 
             cursor: pointer;
             user-select: none;
-            /* Применяем анимацию */
             animation: twinkle 3s infinite ease-in-out;
-            /* Добавляем свечение */
             text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #4da6ff;
             transition: transform 0.3s, opacity 0.3s;
+            z-index: 10;
         }
 
         /* Эффект при наведении мышкой */
         .star:hover {
-            transform: scale(2) !important; /* Увеличиваем */
+            transform: scale(2) !important;
             opacity: 1 !important;
-            color: #ffe600; /* Меняем цвет на золотистый при наведении */
+            color: #ffe600;
             text-shadow: 0 0 10px #ffe600, 0 0 20px #ffcc00;
         }
 
@@ -54,26 +116,27 @@
             opacity: 0;
             transform: scale(0);
             transition: all 0.5s ease-out;
+            pointer-events: none;
         }
 
-        /* 4. Стили для окна с сообщением */
+        /* 6. Стили для окна с сообщением */
         #message-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(20, 20, 40, 0.85); /* Полупрозрачный темный фон */
+            background: rgba(20, 20, 40, 0.85);
             padding: 30px 40px;
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px); /* Эффект размытия фона под окном */
+            backdrop-filter: blur(10px);
             text-align: center;
             max-width: 80%;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            opacity: 0; /* Скрыто по умолчанию */
-            pointer-events: none; /* Чтобы не мешало кликать на звезды */
+            opacity: 0;
+            pointer-events: none;
             transition: opacity 0.5s ease-in-out;
-            z-index: 10;
+            z-index: 20;
         }
 
         #message-text {
@@ -84,7 +147,6 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* Класс для показа сообщения */
         #message-container.show {
             opacity: 1;
         }
@@ -93,39 +155,83 @@
 </head>
 <body>
 
+    <!-- Фоновые мерцающие звезды -->
+    <div class="background-stars" id="background-stars"></div>
+
+    <!-- Падающая комета -->
+    <div class="comet"></div>
+    <div class="comet" style="animation-delay: 2s;"></div>
+
     <!-- Контейнер для сообщений -->
     <div id="message-container">
         <p id="message-text"></p>
     </div>
 
     <script>
-        // Твой массив фраз (34 штуки)
+        // Массив из 40 уникальных фраз
         const messages = [
-            "Сабинка, ты моё самое большое вдохновение.", "Твоя улыбка освещает мой день.", "Ты — моё счастье каждый день.",
-            "С тобой время останавливается.", "Твой смех — моя любимая музыка.", "Ты невероятно чуткая и добрая.",
-            "Рядом с тобой я чувствую себя дома.", "Ты — лучшее, что случилось со мной.", "Твои глаза — целый мир.",
-            "Я восхищаюсь твоим умом.", "Ты делаешь мою жизнь ярче.", "Ты — мой самый близкий человек.",
-            "Твоя нежность бесценна.", "Я благодарен судьбе за встречу с тобой.", "Ты — моё прекрасное приключение.",
-            "С тобой легко и уютно.", "Ты невероятно красивая.", "Твоя поддержка для меня всё.",
-            "Я люблю твою искренность.", "Ты — мой островок спокойствия.", "Твой голос меня успокаивает.",
-            "Ты умеешь видеть красоту в мелочах.", "Я ценю каждый миг с тобой.", "Ты — моё самое важное чудо.",
-            "Твои объятия — самое лучшее место.", "Ты наполняешь мою жизнь смыслом.",
-            "С тобой я становлюсь лучше.", "Ты — моё идеальное отражение.",
-            "Твой взгляд меня окрыляет.", "Ты — самый родной человечек.", "Ты — мой свет в темноте.", "С тобой любые проблемы уходят.", "Ты — моё самое ценное сокровище.",
-            "Я счастлив, что ты у меня есть.", "Сабинка, ты — само совершенство.",
-            "С тобой даже обычный день становится праздником.", "Ты понимаешь меня без слов.",
-            "Ты делаешь мир вокруг добрее.", "У тебя самое доброе сердце на свете.",
-            "Ты — моё вдохновение в каждой мысли.", "Спасибо, что ты просто есть."
+            "Сабинка, ты моё самое большое вдохновение.",
+            "Твоя улыбка освещает мой день.",
+            "Ты — моё счастье каждый день.",
+            "С тобой время останавливается.",
+            "Твой смех — моя любимая музыка.",
+            "Ты невероятно чуткая и добрая.",
+            "Рядом с тобой я чувствую себя дома.",
+            "Ты — лучшее, что случилось со мной.",
+            "Твои глаза — целый мир.",
+            "Я восхищаюсь твоим умом.",
+            "Ты делаешь мою жизнь ярче.",
+            "Ты — мой самый близкий человек.",
+            "Твоя нежность бесценна.",
+            "Я благодарен судьбе за встречу с тобой.",
+            "Ты — моё прекрасное приключение.",
+            "С тобой легко и уютно.",
+            "Ты невероятно красивая.",
+            "Твоя поддержка для меня всё.",
+            "Я люблю твою искренность.",
+            "Ты — мой островок спокойствия.",
+            "Твой голос меня успокаивает.",
+            "Ты умеешь видеть красоту в мелочах.",
+            "Я ценю каждый миг с тобой.",
+            "Ты — моё самое важное чудо.",
+            "Твои объятия — самое лучшее место.",
+            "Ты наполняешь мою жизнь смыслом.",
+            "С тобой я становлюсь лучше.",
+            "Ты — моё идеальное отражение.",
+            "Твой взгляд меня окрыляет.",
+            "Ты — самый родной человечек.",
+            "Ты — мой свет в темноте.",
+            "С тобой любые проблемы уходят.",
+            "Ты — моё самое ценное сокровище.",
+            "Я счастлив, что ты у меня есть.",
+            "Сабинка, ты — само совершенство.",
+            "С тобой даже обычный день становится праздником.",
+            "Ты понимаешь меня без слов.",
+            "Ты делаешь мир вокруг добрее.",
+            "У тебя самое доброе сердце на свете.",
+            "Ты — моё вдохновение в каждой мысли."
         ];
 
         const container = document.body;
         const messageContainer = document.getElementById('message-container');
         const messageText = document.getElementById('message-text');
+        const backgroundStarsContainer = document.getElementById('background-stars');
 
-        // Функция для создания звезд
+        // Создаем фоновые далекие звезды
+        function createBackgroundStars() {
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'background-star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 4 + 's';
+                backgroundStarsContainer.appendChild(star);
+            }
+        }
+
+        // Создаем интерактивные звезды (по одной на каждую фразу)
         function createStars() {
-            // Количество звезд = количество фраз
-            const starCount = messages.length; 
+            const starCount = messages.length;
 
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
@@ -135,19 +241,17 @@
                 star.style.left = Math.random() * 98 + 'vw';
                 star.style.top = Math.random() * 98 + 'vh';
                 
-                // Случайный размер звезды (от 10px до 22px)
+                // Случайный размер звезды
                 star.style.fontSize = (Math.random() * 12 + 10) + 'px';
                 
-                // Случайная задержка анимации, чтобы мерцали не синхронно
+                // Случайная задержка анимации
                 star.style.animationDelay = Math.random() * 3 + 's';
                 
-                // Используем символ специальной звездочки (можно поменять на ✦ или * )
-                star.innerHTML = '★'; 
+                // Символ звезды
+                star.innerHTML = '★';
 
-                // Привязываем фразу к этой звезде по порядку
-                const msgIndex = i;
-
-                star.onclick = () => showMessage(star, msgIndex);
+                // Привязываем уникальную фразу к этой звезде
+                star.onclick = () => showMessage(star, i);
 
                 container.appendChild(star);
             }
@@ -156,24 +260,22 @@
         let hideTimeout;
 
         function showMessage(starElement, index) {
-            // 1. Показываем текст
+            // Показываем текст
             messageText.innerText = messages[index];
             messageContainer.classList.add('show');
 
-            // 2. Звезда "гаснет" и исчезает
+            // Звезда исчезает
             starElement.classList.add('hidden');
 
-            // 3. Убираем возможность кликать на звезду, пока она скрыта
-            starElement.style.pointerEvents = 'none';
-
-            // 4. Скрываем сообщение через 4 секунды
+            // Скрываем сообщение через 4 секунды
             clearTimeout(hideTimeout);
             hideTimeout = setTimeout(() => {
                 messageContainer.classList.remove('show');
             }, 4000);
         }
 
-        // Запускаем создание звезд
+        // Инициализация
+        createBackgroundStars();
         createStars();
     </script>
 </body>
