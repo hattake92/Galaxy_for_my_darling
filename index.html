@@ -2,35 +2,179 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для Сабинки</title>
     <style>
-        body { margin: 0; background: #0b0d17; color: white; font-family: sans-serif; overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .star { position: absolute; width: 8px; height: 8px; background: white; border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px white; transition: transform 0.3s; }
-        .star:hover { transform: scale(1.5); }
-        #message { position: absolute; top: 20%; font-size: 1.5rem; opacity: 0; transition: opacity 0.5s; text-align: center; pointer-events: none; }
+        /* 1. Глубокий космический фон */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1a1f3c 0%, #030510 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 2. Анимация мерцания и свечения */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); filter: blur(0px); }
+            50% { opacity: 1; transform: scale(1.2); filter: blur(1px); }
+        }
+
+        /* 3. Стили для звезд */
+        .star {
+            position: absolute;
+            color: white;
+            /* Используем символ звездочки вместо кружка */
+            font-size: 15px; 
+            cursor: pointer;
+            user-select: none;
+            /* Применяем анимацию */
+            animation: twinkle 3s infinite ease-in-out;
+            /* Добавляем свечение */
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #4da6ff;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        /* Эффект при наведении мышкой */
+        .star:hover {
+            transform: scale(2) !important; /* Увеличиваем */
+            opacity: 1 !important;
+            color: #ffe600; /* Меняем цвет на золотистый при наведении */
+            text-shadow: 0 0 10px #ffe600, 0 0 20px #ffcc00;
+        }
+
+        /* Эффект исчезновения после клика */
+        .star.hidden {
+            animation: none;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.5s ease-out;
+        }
+
+        /* 4. Стили для окна с сообщением */
+        #message-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(20, 20, 40, 0.85); /* Полупрозрачный темный фон */
+            padding: 30px 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px); /* Эффект размытия фона под окном */
+            text-align: center;
+            max-width: 80%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            opacity: 0; /* Скрыто по умолчанию */
+            pointer-events: none; /* Чтобы не мешало кликать на звезды */
+            transition: opacity 0.5s ease-in-out;
+            z-index: 10;
+        }
+
+        #message-text {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            color: #e0e6ed;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Класс для показа сообщения */
+        #message-container.show {
+            opacity: 1;
+        }
+
     </style>
 </head>
 <body>
 
-<div id="message"></div>
+    <!-- Контейнер для сообщений -->
+    <div id="message-container">
+        <p id="message-text"></p>
+    </div>
 
-<script>
-    const messages = ["Ты — моё счастье", "Твоя улыбка — лучшее, что я видел", "Сабина, ты чудо", "Мои чувства к тебе бесконечны"];
-    const messageDisplay = document.getElementById('message');
+    <script>
+        // Твой массив фраз (34 штуки)
+        const messages = [
+            "Сабинка, ты моё самое большое вдохновение.", "Твоя улыбка освещает мой день.", "Ты — моё счастье каждый день.",
+            "С тобой время останавливается.", "Твой смех — моя любимая музыка.", "Ты невероятно чуткая и добрая.",
+            "Рядом с тобой я чувствую себя дома.", "Ты — лучшее, что случилось со мной.", "Твои глаза — целый мир.",
+            "Я восхищаюсь твоим умом.", "Ты делаешь мою жизнь ярче.", "Ты — мой самый близкий человек.",
+            "Твоя нежность бесценна.", "Я благодарен судьбе за встречу с тобой.", "Ты — моё прекрасное приключение.",
+            "С тобой легко и уютно.", "Ты невероятно красивая.", "Твоя поддержка для меня всё.",
+            "Я люблю твою искренность.", "Ты — мой островок спокойствия.", "Твой голос меня успокаивает.",
+            "Ты умеешь видеть красоту в мелочах.", "Я ценю каждый миг с тобой.", "Ты — моё самое важное чудо.",
+            "Твои объятия — самое лучшее место.", "Ты наполняешь мою жизнь смыслом.",
+            "С тобой я становлюсь лучше.", "Ты — моё идеальное отражение.",
+            "Твой взгляд меня окрыляет.", "Ты — самый родной человечек.", "Ты — мой свет в темноте.", "С тобой любые проблемы уходят.", "Ты — моё самое ценное сокровище.",
+            "Я счастлив, что ты у меня есть.", "Сабинка, ты — само совершенство.",
+            "С тобой даже обычный день становится праздником.", "Ты понимаешь меня без слов.",
+            "Ты делаешь мир вокруг добрее.", "У тебя самое доброе сердце на свете.",
+            "Ты — моё вдохновение в каждой мысли.", "Спасибо, что ты просто есть."
+        ];
 
-    // Создаем звезды
-    for (let i = 0; i < 20; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.top = Math.random() * 100 + 'vh';
-        
-        star.onclick = () => {
-            messageDisplay.innerText = messages[Math.floor(Math.random() * messages.length)];
-            messageDisplay.style.opacity = 1;
-            setTimeout(() => { messageDisplay.style.opacity = 0; }, 2000);
-        };
-        document.body.appendChild(star);
-    }
-</script>
+        const container = document.body;
+        const messageContainer = document.getElementById('message-container');
+        const messageText = document.getElementById('message-text');
+
+        // Функция для создания звезд
+        function createStars() {
+            // Количество звезд = количество фраз
+            const starCount = messages.length; 
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Случайная позиция
+                star.style.left = Math.random() * 98 + 'vw';
+                star.style.top = Math.random() * 98 + 'vh';
+                
+                // Случайный размер звезды (от 10px до 22px)
+                star.style.fontSize = (Math.random() * 12 + 10) + 'px';
+                
+                // Случайная задержка анимации, чтобы мерцали не синхронно
+                star.style.animationDelay = Math.random() * 3 + 's';
+                
+                // Используем символ специальной звездочки (можно поменять на ✦ или * )
+                star.innerHTML = '★'; 
+
+                // Привязываем фразу к этой звезде по порядку
+                const msgIndex = i;
+
+                star.onclick = () => showMessage(star, msgIndex);
+
+                container.appendChild(star);
+            }
+        }
+
+        let hideTimeout;
+
+        function showMessage(starElement, index) {
+            // 1. Показываем текст
+            messageText.innerText = messages[index];
+            messageContainer.classList.add('show');
+
+            // 2. Звезда "гаснет" и исчезает
+            starElement.classList.add('hidden');
+
+            // 3. Убираем возможность кликать на звезду, пока она скрыта
+            starElement.style.pointerEvents = 'none';
+
+            // 4. Скрываем сообщение через 4 секунды
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
+                messageContainer.classList.remove('show');
+            }, 4000);
+        }
+
+        // Запускаем создание звезд
+        createStars();
+    </script>
 </body>
 </html>
