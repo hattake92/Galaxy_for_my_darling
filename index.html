@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -9,6 +10,7 @@
             margin: 0; padding: 0; height: 100vh; overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff;
             display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(to bottom, #2b580c, #1e3d07);
         }
 
         #bg-video {
@@ -17,17 +19,96 @@
             pointer-events: none;
         }
 
-        .background-stars { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .background-star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0.4; animation: distant-twinkle 4s infinite ease-in-out; }
-        @keyframes distant-twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
+        /* Фоновые лепестки или блики на поле */
+        .background-field { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .bg-dot { position: absolute; width: 6px; height: 6px; background: rgba(255, 255, 255, 0.3); border-radius: 50%; animation: float-dot 5s infinite ease-in-out; }
+        @keyframes float-dot { 0%, 100% { transform: translateY(0); opacity: 0.2; } 50% { transform: translateY(-10px); opacity: 0.6; } }
 
-        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(1); filter: blur(0px); } 50% { opacity: 1; transform: scale(1.2); filter: blur(1px); } }
-        .star { position: absolute; color: white; font-size: 15px; cursor: pointer; user-select: none; animation: twinkle 3s infinite ease-in-out; text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #4da6ff; transition: transform 0.3s, opacity 0.3s; z-index: 10; }
-        .star:hover { transform: scale(2) !important; opacity: 1 !important; color: #ffe600; text-shadow: 0 0 10px #ffe600, 0 0 20px #ffcc00; }
-        .star.hidden { animation: none; opacity: 0; transform: scale(0); transition: all 0.5s ease-out; pointer-events: none; }
+        /* Интерактивные ромашки */
+        @keyframes chamomile-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        
+        .chamomile { 
+            position: absolute; 
+            cursor: pointer; 
+            user-select: none; 
+            width: 36px; 
+            height: 36px; 
+            z-index: 10; 
+            animation: chamomile-pulse 3s infinite ease-in-out;
+            transition: transform 0.3s, opacity 0.3s;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6));
+        }
 
-        #message-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(20, 20, 40, 0.8); padding: 30px 40px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); text-align: center; max-width: 80%; opacity: 0; pointer-events: none; transition: opacity 0.5s ease-in-out; z-index: 20; }
-        #message-text { font-size: 1.5rem; line-height: 1.6; color: #e0e6ed; margin: 0; }
+        .chamomile:hover { 
+            transform: scale(1.4) !important; 
+            opacity: 1 !important; 
+            filter: drop-shadow(0 0 10px #ffea75);
+        }
+
+        .chamomile.hidden { 
+            animation: none; 
+            opacity: 0; 
+            transform: scale(0); 
+            transition: all 0.5s ease-out; 
+            pointer-events: none; 
+        }
+
+        /* Отрисовка ромашки через CSS (белые лепестки и желтая серединка) */
+        .chamomile-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .petal {
+            position: absolute;
+            width: 10px;
+            height: 18px;
+            background: #ffffff;
+            border-radius: 50%;
+            top: 9px;
+            left: 13px;
+        }
+
+        .petal:nth-child(1) { transform: rotate(0deg) translateY(-10px); }
+        .petal:nth-child(2) { transform: rotate(45deg) translateY(-10px); }
+        .petal:nth-child(3) { transform: rotate(90deg) translateY(-10px); }
+        .petal:nth-child(4) { transform: rotate(135deg) translateY(-10px); }
+        .petal:nth-child(5) { transform: rotate(180deg) translateY(-10px); }
+        .petal:nth-child(6) { transform: rotate(225deg) translateY(-10px); }
+        .petal:nth-child(7) { transform: rotate(270deg) translateY(-10px); }
+        .petal:nth-child(8) { transform: rotate(315deg) translateY(-10px); }
+
+        .center-core {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #ffcc00;
+            border-radius: 50%;
+            top: 11px;
+            left: 11px;
+            box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+            z-index: 2;
+        }
+
+        #message-container { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            background: rgba(20, 40, 20, 0.85); 
+            padding: 30px 40px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.3); 
+            backdrop-filter: blur(10px); 
+            text-align: center; 
+            max-width: 80%; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 0.5s ease-in-out; 
+            z-index: 20; 
+        }
+        #message-text { font-size: 1.5rem; line-height: 1.6; color: #f2f7f0; margin: 0; }
         #message-container.show { opacity: 1; }
         
         #mute-btn { 
@@ -58,7 +139,7 @@
     </audio>
 
     <div id="mute-btn">Музыка: Выкл</div>
-    <div class="background-stars" id="background-stars"></div>
+    <div class="background-field" id="background-field"></div>
     <div id="message-container"><p id="message-text"></p></div>
 
     <script>
@@ -163,38 +244,56 @@
             isPlaying = !isPlaying;
         };
 
-        function createBackgroundStars() {
-            const container = document.getElementById('background-stars');
-            for (let i = 0; i < 150; i++) {
-                const star = document.createElement('div');
-                star.className = 'background-star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 4 + 's';
-                container.appendChild(star);
+        function createBackgroundDots() {
+            const container = document.getElementById('background-field');
+            for (let i = 0; i < 80; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'bg-dot';
+                dot.style.left = Math.random() * 100 + '%';
+                dot.style.top = Math.random() * 100 + '%';
+                dot.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(dot);
             }
         }
 
-        function createStars() {
+        function createChamomiles() {
             const container = document.body;
-            messages.forEach((msg, i) => {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 98 + 'vw';
-                star.style.top = Math.random() * 98 + 'vh';
-                star.innerHTML = '★';
-                star.onclick = () => {
+            messages.forEach((msg) => {
+                const chamomile = document.createElement('div');
+                chamomile.className = 'chamomile';
+                chamomile.style.left = Math.random() * 95 + 'vw';
+                chamomile.style.top = Math.random() * 90 + 'vh';
+                chamomile.style.animationDelay = (Math.random() * 3) + 's';
+                
+                // Создаем структуру ромашки через HTML
+                chamomile.innerHTML = `
+                    <div class="chamomile-inner">
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="center-core"></div>
+                    </div>
+                `;
+
+                chamomile.onclick = () => {
                     document.getElementById('message-text').innerText = msg;
                     document.getElementById('message-container').classList.add('show');
-                    star.classList.add('hidden');
+                    chamomile.classList.add('hidden');
                     setTimeout(() => document.getElementById('message-container').classList.remove('show'), 4000);
                 };
-                container.appendChild(star);
+                container.appendChild(chamomile);
             });
         }
 
-        createBackgroundStars();
-        createStars();
+        createBackgroundDots();
+        createChamomiles();
     </script>
 </body>
 </html>
+
+```
