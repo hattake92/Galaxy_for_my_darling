@@ -1,150 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для Сабинки</title>
-    <style>
-        body {
-            margin: 0; padding: 0; height: 100vh; overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff;
-            display: flex; justify-content: center; align-items: center;
-            /* Нежный летний градиент луга и ясного неба */
-            background: linear-gradient(135deg, #4a7c23 0%, #2e5214 50%, #193309 100%);
-        }
-
-        /* Мягкие декоративные круги на заднем фоне для эффекта глубины луга */
-        .background-field { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: hidden; }
-        .bg-blur-circle { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.2; pointer-events: none; }
-        
-        .circle-1 { width: 400px; height: 400px; background: #88d44c; top: -100px; left: -100px; }
-        .circle-2 { width: 500px; height: 500px; background: #348216; bottom: -150px; right: -100px; }
-        .circle-3 { width: 300px; height: 300px; background: #c5f0a1; top: 40%; left: 60%; opacity: 0.15; }
-
-        .bg-dot { position: absolute; width: 6px; height: 6px; background: rgba(255, 255, 255, 0.3); border-radius: 50%; animation: float-dot 5s infinite ease-in-out; }
-        @keyframes float-dot { 0%, 100% { transform: translateY(0); opacity: 0.2; } 50% { transform: translateY(-10px); opacity: 0.6; } }
-
-        /* Интерактивные ромашки */
-        @keyframes chamomile-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-        
-        .chamomile { 
-            position: absolute; 
-            cursor: pointer; 
-            user-select: none; 
-            width: 36px; 
-            height: 36px; 
-            z-index: 10; 
-            animation: chamomile-pulse 3s infinite ease-in-out;
-            transition: transform 0.3s, opacity 0.3s;
-            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6));
-        }
-
-        .chamomile:hover { 
-            transform: scale(1.4) !important; 
-            opacity: 1 !important; 
-            filter: drop-shadow(0 0 10px #ffea75);
-        }
-
-        .chamomile.hidden { 
-            animation: none; 
-            opacity: 0; 
-            transform: scale(0); 
-            transition: all 0.5s ease-out; 
-            pointer-events: none; 
-        }
-
-        /* Отрисовка ромашки через CSS (белые лепестки и желтая серединка) */
-        .chamomile-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .petal {
-            position: absolute;
-            width: 10px;
-            height: 18px;
-            background: #ffffff;
-            border-radius: 50%;
-            top: 9px;
-            left: 13px;
-        }
-
-        .petal:nth-child(1) { transform: rotate(0deg) translateY(-10px); }
-        .petal:nth-child(2) { transform: rotate(45deg) translateY(-10px); }
-        .petal:nth-child(3) { transform: rotate(90deg) translateY(-10px); }
-        .petal:nth-child(4) { transform: rotate(135deg) translateY(-10px); }
-        .petal:nth-child(5) { transform: rotate(180deg) translateY(-10px); }
-        .petal:nth-child(6) { transform: rotate(225deg) translateY(-10px); }
-        .petal:nth-child(7) { transform: rotate(270deg) translateY(-10px); }
-        .petal:nth-child(8) { transform: rotate(315deg) translateY(-10px); }
-
-        .center-core {
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background: #ffcc00;
-            border-radius: 50%;
-            top: 11px;
-            left: 11px;
-            box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
-            z-index: 2;
-        }
-
-        #message-container { 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            background: rgba(20, 40, 20, 0.85); 
-            padding: 30px 40px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(255, 255, 255, 0.3); 
-            backdrop-filter: blur(10px); 
-            text-align: center; 
-            max-width: 80%; 
-            opacity: 0; 
-            pointer-events: none; 
-            transition: opacity 0.5s ease-in-out; 
-            z-index: 20; 
-        }
-        #message-text { font-size: 1.5rem; line-height: 1.6; color: #f2f7f0; margin: 0; }
-        #message-container.show { opacity: 1; }
-        
-        #mute-btn { 
-            position: fixed; 
-            bottom: 30px; 
-            right: 20px; 
-            z-index: 9999; 
-            background: rgba(0, 0, 0, 0.5); 
-            border: 1px solid rgba(255, 255, 255, 0.5); 
-            color: white; 
-            padding: 15px 25px; 
-            border-radius: 25px; 
-            cursor: pointer; 
-            font-size: 16px; 
-            backdrop-filter: blur(5px);
-            touch-action: manipulation;
-        }
-    </style>
-</head>
-<body>
-
-    <audio id="bg-music" loop preload="auto">
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
-
-    <div id="mute-btn">Музыка: Выкл</div>
-    
-    <div class="background-field" id="background-field">
-        <div class="bg-blur-circle circle-1"></div>
-        <div class="bg-blur-circle circle-2"></div>
-        <div class="bg-blur-circle circle-3"></div>
-    </div>
-
-    <div id="message-container"><p id="message-text"></p></div>
-
-    <script>
+<script>
         const messages = [
             // Исходные сообщения
             "Сабинка, ты моё самое большое вдохновение.", 
@@ -235,6 +89,9 @@
         const muteBtn = document.getElementById('mute-btn');
         let isPlaying = false;
 
+        // Переменная для контроля таймера, чтобы они не накладывались друг на друга
+        let hideTimeout = null;
+
         muteBtn.onclick = () => {
             if (isPlaying) { 
                 music.pause(); 
@@ -282,10 +139,21 @@
                 `;
 
                 chamomile.onclick = () => {
+                    const msgContainer = document.getElementById('message-container');
                     document.getElementById('message-text').innerText = msg;
-                    document.getElementById('message-container').classList.add('show');
+                    msgContainer.classList.add('show');
                     chamomile.classList.add('hidden');
-                    setTimeout(() => document.getElementById('message-container').classList.remove('show'), 4000);
+
+                    // Отменяем прошлый таймер, если игрок кликает быстро на другую ромашку
+                    if (hideTimeout) clearTimeout(hideTimeout);
+
+                    // Время отображения зависит от длины текста: минимум 5 секунд, 
+                    // а для длинных строк — еще дольше (примерно 70 миллисекунд на один символ)
+                    const displayTime = Math.max(5000, msg.length * 70);
+
+                    hideTimeout = setTimeout(() => {
+                        msgContainer.classList.remove('show');
+                    }, displayTime);
                 };
                 container.appendChild(chamomile);
             });
@@ -294,5 +162,3 @@
         createBackgroundDots();
         createChamomiles();
     </script>
-</body>
-</html>
