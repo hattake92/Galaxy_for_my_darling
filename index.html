@@ -9,121 +9,86 @@
             margin: 0; padding: 0; height: 100vh; overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff;
             display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(to top, #1f1124 0%, #12091c 40%, #08040c 100%);
+            background: linear-gradient(135deg, #1a0b2e 0%, #0d0614 50%, #050208 100%);
         }
 
         .background-field { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: hidden; }
-        .bg-blur-circle { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.15; pointer-events: none; }
+        .bg-blur-circle { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.2; pointer-events: none; }
         
-        .circle-1 { width: 600px; height: 600px; background: #ff7b00; bottom: -200px; left: 20%; }
-        .circle-2 { width: 500px; height: 500px; background: #9d4edd; top: -100px; right: -100px; }
+        .circle-1 { width: 400px; height: 400px; background: #9d4edd; top: -100px; left: -100px; }
+        .circle-2 { width: 450px; height: 450px; background: #ff758c; bottom: -150px; right: -100px; }
 
         .bg-star { position: absolute; width: 2px; height: 2px; background: #ffffff; border-radius: 50%; opacity: 0.5; animation: star-twinkle 3s infinite ease-in-out; }
         @keyframes star-twinkle { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 0.9; transform: scale(1.4); } }
 
-        @keyframes float-lantern {
-            0% { transform: translateY(105vh) translateX(0); opacity: 0; }
-            10% { opacity: 0.9; }
-            90% { opacity: 0.9; }
-            100% { transform: translateY(-15vh) translateX(20px); opacity: 0; }
-        }
-
-        .lantern-wrapper { 
-            position: absolute; 
-            z-index: 10; 
-            animation: float-lantern infinite linear;
-        }
-
-        .lantern { 
+        /* Центральная карточка-послание */
+        .card-container {
             position: relative;
-            cursor: pointer; 
-            user-select: none; 
-            width: 32px; 
-            height: 44px; 
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
-        }
-
-        .lantern:hover { 
-            transform: scale(1.4); 
-        }
-
-        .lantern-wrapper.hidden { 
-            animation: none; 
-            opacity: 0; 
-            transform: scale(0); 
-            transition: all 0.5s ease-out; 
-            pointer-events: none; 
-        }
-
-        .lantern-body {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #ffb703 0%, #fb8500 50%, #d90429 100%);
-            border-radius: 16px 16px 8px 8px;
-            box-shadow: 0 0 12px #ffb703, inset 0 0 10px rgba(255, 255, 255, 0.4);
-            animation: pulse-lantern 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse-lantern {
-            0%, 100% { box-shadow: 0 0 10px #ffb703, inset 0 0 8px rgba(255, 255, 255, 0.3); }
-            50% { box-shadow: 0 0 20px #ffb703, 0 0 30px #fb8500, inset 0 0 15px rgba(255, 255, 255, 0.6); }
-        }
-
-        .lantern-top, .lantern-bottom {
-            position: absolute;
-            background: #3d0000;
-            left: 4px;
-            right: 4px;
-            height: 3px;
-            border-radius: 2px;
-            z-index: 2;
-        }
-        .lantern-top { top: -2px; }
-        .lantern-bottom { bottom: -2px; }
-
-        #message-container { 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%) scale(0.9); 
-            background: rgba(25, 12, 35, 0.94); 
-            padding: 25px 30px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(255, 183, 3, 0.4); 
-            backdrop-filter: blur(15px); 
-            text-align: center; 
-            width: 85%; 
-            max-width: 450px; 
-            opacity: 0; 
-            pointer-events: none; 
-            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; 
-            z-index: 20; 
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 183, 3, 0.2);
+            z-index: 10;
+            background: rgba(25, 12, 38, 0.85);
+            padding: 40px 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 117, 140, 0.3);
+            backdrop-filter: blur(15px);
+            text-align: center;
+            width: 85%;
+            max-width: 420px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(157, 78, 221, 0.2);
             box-sizing: border-box;
-        }
-        
-        #message-container.show { 
-            opacity: 1; 
-            transform: translate(-50%, -50%) scale(1);
+            transform: translateY(0);
+            animation: card-float 4s infinite ease-in-out;
+            transition: all 0.4s ease;
         }
 
-        #message-text { 
-            font-size: 1.25rem; 
-            line-height: 1.5; 
-            color: #fff3b0; 
-            margin: 0; 
-            text-shadow: 0 2px 5px rgba(0,0,0,0.6); 
+        @keyframes card-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
-        
+
+        #message-text {
+            font-size: 1.35rem;
+            line-height: 1.6;
+            color: #ffe5ec;
+            margin: 0 0 30px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #ff758c 0%, #9d4edd 100%);
+            border: none;
+            color: white;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 117, 140, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            touch-action: manipulation;
+        }
+
+        .next-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6);
+        }
+
+        .next-btn:active {
+            transform: scale(0.97);
+        }
+
         #mute-btn { 
             position: fixed; 
             bottom: 20px; 
             right: 20px; 
             z-index: 9999; 
-            background: rgba(30, 15, 45, 0.8); 
-            border: 1px solid rgba(255, 183, 3, 0.4); 
-            color: #fff3b0; 
+            background: rgba(25, 12, 38, 0.7); 
+            border: 1px solid rgba(255, 117, 140, 0.3); 
+            color: #ffe5ec; 
             padding: 10px 18px; 
             border-radius: 20px; 
             cursor: pointer; 
@@ -132,26 +97,16 @@
             touch-action: manipulation;
             transition: background 0.3s;
         }
-        #mute-btn:hover { background: rgba(50, 25, 75, 0.9); }
+        #mute-btn:hover { background: rgba(45, 20, 65, 0.9); }
 
-        /* Адаптивность для мобильных телефонов */
-        @media (max-width: 600px) {
-            #message-container {
-                padding: 20px 20px;
+        @media (max-width: 480px) {
+            .card-container {
+                padding: 30px 20px;
                 width: 90%;
             }
             #message-text {
-                font-size: 1.05rem;
-            }
-            .lantern {
-                width: 28px;
-                height: 38px;
-            }
-            #mute-btn {
-                bottom: 15px;
-                right: 15px;
-                padding: 8px 14px;
-                font-size: 13px;
+                font-size: 1.15rem;
+                min-height: 110px;
             }
         }
     </style>
@@ -169,7 +124,10 @@
         <div class="bg-blur-circle circle-2"></div>
     </div>
 
-    <div id="message-container"><p id="message-text"></p></div>
+    <div class="card-container">
+        <p id="message-text">Нажми кнопку ниже, чтобы открыть послание ✨</p>
+        <button class="next-btn" id="next-btn">Открыть</button>
+    </div>
 
     <script>
         const messages = [
@@ -253,8 +211,9 @@
 
         const music = document.getElementById('bg-music');
         const muteBtn = document.getElementById('mute-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const messageText = document.getElementById('message-text');
         let isPlaying = false;
-        let hideTimeout = null;
 
         muteBtn.onclick = () => {
             if (isPlaying) { 
@@ -279,348 +238,17 @@
             }
         }
 
-        function createLanterns() {
-            const container = document.body;
-            messages.forEach((msg) => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'lantern-wrapper';
-                wrapper.style.left = (Math.random() * 90 + 5) + 'vw';
-                
-                const duration = Math.random() * 6 + 12;
-                const delay = -Math.random() * duration;
-                
-                wrapper.style.animationDuration = duration + 's';
-                wrapper.style.animationDelay = delay + 's';
-                
-                const lantern = document.createElement('div');
-                lantern.className = 'lantern';
-                lantern.innerHTML = `
-                    <div class="lantern-top"></div>
-                    <div class="lantern-body"></div>
-                    <div class="lantern-bottom"></div>
-                `;
-
-                lantern.onclick = () => {
-                    const msgContainer = document.getElementById('message-container');
-                    document.getElementById('message-text').innerText = msg;
-                    msgContainer.classList.add('show');
-                    wrapper.classList.add('hidden');
-
-                    if (hideTimeout) clearTimeout(hideTimeout);
-
-                    const displayTime = Math.max(6000, msg.length * 80);
-
-                    hideTimeout = setTimeout(() => {
-                        msgContainer.classList.remove('show');
-                    }, displayTime);
-                };
-
-                wrapper.appendChild(lantern);
-                container.appendChild(wrapper);
-            });
-        }
-
-        createStars();
-        createLanterns();
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для Сабинки</title>
-    <style>
-        body {
-            margin: 0; padding: 0; height: 100vh; overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff;
-            display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(to top, #1f1124 0%, #12091c 40%, #08040c 100%);
-        }
-
-        .background-field { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: hidden; }
-        .bg-blur-circle { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.15; pointer-events: none; }
-        
-        .circle-1 { width: 600px; height: 600px; background: #ff7b00; bottom: -200px; left: 20%; }
-        .circle-2 { width: 500px; height: 500px; background: #9d4edd; top: -100px; right: -100px; }
-
-        .bg-star { position: absolute; width: 2px; height: 2px; background: #ffffff; border-radius: 50%; opacity: 0.5; animation: star-twinkle 3s infinite ease-in-out; }
-        @keyframes star-twinkle { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 0.9; transform: scale(1.4); } }
-
-        @keyframes float-lantern {
-            0% { transform: translateY(105vh) translateX(0); opacity: 0; }
-            10% { opacity: 0.9; }
-            90% { opacity: 0.9; }
-            100% { transform: translateY(-15vh) translateX(30px); opacity: 0; }
-        }
-
-        /* Обертка отвечает только за полет */
-        .lantern-wrapper { 
-            position: absolute; 
-            z-index: 10; 
-            animation: float-lantern infinite linear;
-        }
-
-        /* Сам фонарик реагирует на наведение и клик */
-        .lantern { 
-            position: relative;
-            cursor: pointer; 
-            user-select: none; 
-            width: 40px; 
-            height: 55px; 
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
-        }
-
-        .lantern:hover { 
-            transform: scale(1.4); 
-        }
-
-        .lantern-wrapper.hidden { 
-            animation: none; 
-            opacity: 0; 
-            transform: scale(0); 
-            transition: all 0.5s ease-out; 
-            pointer-events: none; 
-        }
-
-        .lantern-body {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #ffb703 0%, #fb8500 50%, #d90429 100%);
-            border-radius: 20px 20px 10px 10px;
-            box-shadow: 0 0 15px #ffb703, inset 0 0 15px rgba(255, 255, 255, 0.4);
-            animation: pulse-lantern 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse-lantern {
-            0%, 100% { box-shadow: 0 0 12px #ffb703, inset 0 0 10px rgba(255, 255, 255, 0.3); }
-            50% { box-shadow: 0 0 25px #ffb703, 0 0 40px #fb8500, inset 0 0 20px rgba(255, 255, 255, 0.6); }
-        }
-
-        .lantern-top, .lantern-bottom {
-            position: absolute;
-            background: #3d0000;
-            left: 5px;
-            right: 5px;
-            height: 4px;
-            border-radius: 2px;
-            z-index: 2;
-        }
-        .lantern-top { top: -2px; }
-        .lantern-bottom { bottom: -2px; }
-
-        #message-container { 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%) scale(0.9); 
-            background: rgba(25, 12, 35, 0.92); 
-            padding: 35px 45px; 
-            border-radius: 22px; 
-            border: 1px solid rgba(255, 183, 3, 0.4); 
-            backdrop-filter: blur(15px); 
-            text-align: center; 
-            max-width: 80%; 
-            opacity: 0; 
-            pointer-events: none; 
-            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; 
-            z-index: 20; 
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 183, 3, 0.2);
-        }
-        
-        #message-container.show { 
-            opacity: 1; 
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        #message-text { font-size: 1.5rem; line-height: 1.6; color: #fff3b0; margin: 0; text-shadow: 0 2px 5px rgba(0,0,0,0.6); }
-        
-        #mute-btn { 
-            position: fixed; 
-            bottom: 30px; 
-            right: 20px; 
-            z-index: 9999; 
-            background: rgba(30, 15, 45, 0.7); 
-            border: 1px solid rgba(255, 183, 3, 0.4); 
-            color: #fff3b0; 
-            padding: 15px 25px; 
-            border-radius: 25px; 
-            cursor: pointer; 
-            font-size: 16px; 
-            backdrop-filter: blur(5px);
-            touch-action: manipulation;
-            transition: background 0.3s;
-        }
-        #mute-btn:hover { background: rgba(50, 25, 75, 0.9); }
-    </style>
-</head>
-<body>
-
-    <audio id="bg-music" loop preload="auto">
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
-
-    <div id="mute-btn">Музыка: Выкл</div>
-    
-    <div class="background-field" id="background-field">
-        <div class="bg-blur-circle circle-1"></div>
-        <div class="bg-blur-circle circle-2"></div>
-    </div>
-
-    <div id="message-container"><p id="message-text"></p></div>
-
-    <script>
-        const messages = [
-            "Сабинка, ты моё самое большое вдохновение.", 
-            "Твоя улыбка освещает мой день.", 
-            "Ты — моё счастье каждый день.", 
-            "С тобой время останавливается.", 
-            "Твой смех — моя любимая музыка.", 
-            "Ты невероятно чуткая и добрая.", 
-            "Рядом с тобой я чувствую себя дома.", 
-            "Ты — лучшее, что случилось со мной.", 
-            "Твои глаза — целый мир.", 
-            "Я восхищаюсь твоим умом.", 
-            "Ты делаешь мою жизнь ярче.", 
-            "Ты — мой самый близкий человек.", 
-            "Твоя нежность бесценна.", 
-            "Я благодарен судьбе за встречу с тобой.", 
-            "Ты — моё прекрасное приключение.", 
-            "С тобой легко и уютно.", 
-            "Ты невероятно красивая.", 
-            "Твоя поддержка для меня всё.", 
-            "Я люблю твою искренность.", 
-            "Ты — мой островок спокойствия.", 
-            "Твой голос меня успокаивает.", 
-            "Ты умеешь видеть красоту в мелочах.", 
-            "Я ценю каждый миг с тобой.", 
-            "Ты — моё самое важное чудо.", 
-            "Твои объятия — самое лучшее место.", 
-            "Ты наполняешь мою жизнь смыслом.", 
-            "С тобой я становлюсь лучше.", 
-            "Ты — моё идеальное отражение.", 
-            "Твой взгляд меня окрыляет.", 
-            "Ты — самый родной человечек.", 
-            "Ты — мой свет в темноте.", 
-            "С тобой любые проблемы уходят.", 
-            "Ты — моё самое ценное сокровище.", 
-            "Я счастлив, что ты у меня есть.", 
-            "Сабинка, ты — само совершенство.", 
-            "С тобой даже обычный день становится праздником.", 
-            "Ты понимаешь меня без слов.", 
-            "Ты делаешь мир вокруг добрее.", 
-            "У тебя самое доброе сердце на свете.", 
-            "Ты — моё вдохновение в каждой мысли.", 
-            "Спасибо, что ты просто есть.",
-            "Сабинка, с тобой каждый день наполнен смыслом и теплом.",
-            "Твоя улыбка творит настоящие чудеса с моим настроением.",
-            "Рядом с тобой мне хочется становиться еще лучше.",
-            "Твоё присутствие делает этот мир намного уютнее.",
-            "Я бесконечно ценю всё, что ты делаешь для нас.",
-            "Ты умеешь делать даже самые простые моменты особенными.",
-            "Твои мысли и твоя душа прекрасны так же, как и ты сама.",
-            "С тобой мне тепло и спокойно в любую погоду.",
-            "Ты — моё самое дорогое и светлое воспоминание каждого дня.",
-            "Твоя забота — это то, в чём я нуждаюсь больше всего.",
-            "Каждая минута, проведённая с тобой, бесценна.",
-            "Ты наполняешь мою жизнь гармонией и радостью.",
-            "Твой внутренний свет освещает даже самые пасмурные дни.",
-            "Я благодарен за каждое мгновение, подаренное нам.",
-            "Ты — моё вдохновение, моё солнце и моё успокоение.",
-            "С тобой мне ничего не страшно и всё по плечу.",
-            "Ты — самое чистое и прекрасное, что у меня есть.",
-            "Сабинка, просто спасибо за то, что ты есть у меня.",
-            "Ты так красива, что я просто не могу отвести взгляд.",
-            "Ты — воплощение изящества и очарования.",
-            "Твоя улыбка светит, как солнце.",
-            "Твои волосы пахнут счастьем.",
-            "Твоя доброта заставляет сердце теплеть.",
-            "Ты мой источник вдохновения.",
-            "Ты совершенна такая, как есть.",
-            "Твой смех звучит как самая прекрасная музыка на свете.",
-            "В твоих глазах отражаются целые миры, в которых хочется остаться навсегда.",
-            "Рядом с тобой время словно останавливается, оставляя только нас.",
-            "Твои объятия — это самое уютное и безопасное место во Вселенной.",
-            "Твой ум и проницательность восхищают меня с каждой новой беседой.",
-            "Ты умеешь замечать волшебство в самых простых вещах.",
-            "Твоя поддержка придает мне сил даже в самый пасмурный день.",
-            "Ты наполняешь мою жизнь глубоким смыслом и искренней радостью.",
-            "Твой голос способен прогнать любую тревогу и успокоить душу.",
-            "С тобой даже самый обычный день превращается в удивительное приключение."
-        ];
-
-        const music = document.getElementById('bg-music');
-        const muteBtn = document.getElementById('mute-btn');
-        let isPlaying = false;
-        let hideTimeout = null;
-
-        muteBtn.onclick = () => {
-            if (isPlaying) { 
-                music.pause(); 
-                muteBtn.innerText = "Музыка: Выкл"; 
-            } else { 
-                music.play().catch(e => console.log(e)); 
-                muteBtn.innerText = "Музыка: Вкл"; 
-            }
-            isPlaying = !isPlaying;
+        nextBtn.onclick = () => {
+            messageText.style.opacity = 0;
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * messages.length);
+                messageText.innerText = messages[randomIndex];
+                nextBtn.innerText = "Следующее ❤️";
+                messageText.style.opacity = 1;
+            }, 200);
         };
 
-        function createStars() {
-            const container = document.getElementById('background-field');
-            for (let i = 0; i < 60; i++) {
-                const star = document.createElement('div');
-                star.className = 'bg-star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                container.appendChild(star);
-            }
-        }
-
-        function createLanterns() {
-            const container = document.body;
-            messages.forEach((msg) => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'lantern-wrapper';
-                wrapper.style.left = (Math.random() * 92 + 4) + 'vw';
-                
-                const duration = Math.random() * 6 + 12;
-                const delay = -Math.random() * duration;
-                
-                wrapper.style.animationDuration = duration + 's';
-                wrapper.style.animationDelay = delay + 's';
-                
-                const lantern = document.createElement('div');
-                lantern.className = 'lantern';
-                lantern.innerHTML = `
-                    <div class="lantern-top"></div>
-                    <div class="lantern-body"></div>
-                    <div class="lantern-bottom"></div>
-                `;
-
-                lantern.onclick = () => {
-                    const msgContainer = document.getElementById('message-container');
-                    document.getElementById('message-text').innerText = msg;
-                    msgContainer.classList.add('show');
-                    wrapper.classList.add('hidden');
-
-                    if (hideTimeout) clearTimeout(hideTimeout);
-
-                    const displayTime = Math.max(6000, msg.length * 80);
-
-                    hideTimeout = setTimeout(() => {
-                        msgContainer.classList.remove('show');
-                    }, displayTime);
-                };
-
-                wrapper.appendChild(lantern);
-                container.appendChild(wrapper);
-            });
-        }
-
         createStars();
-        createLanterns();
     </script>
 </body>
 </html>
