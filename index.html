@@ -9,81 +9,100 @@
             margin: 0; padding: 0; height: 100vh; overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff;
             display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(135deg, #4a7c23 0%, #2e5214 50%, #193309 100%);
+            background: radial-gradient(circle at center, #1b0c2e 0%, #0d0614 60%, #050208 100%);
         }
 
         .background-field { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: hidden; }
-        .bg-blur-circle { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.2; pointer-events: none; }
+        .bg-blur-circle { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none; }
         
-        .circle-1 { width: 400px; height: 400px; background: #88d44c; top: -100px; left: -100px; }
-        .circle-2 { width: 500px; height: 500px; background: #348216; bottom: -150px; right: -100px; }
-        .circle-3 { width: 300px; height: 300px; background: #c5f0a1; top: 40%; left: 60%; opacity: 0.15; }
+        .circle-1 { width: 500px; height: 500px; background: #8a2be2; top: -150px; left: -150px; }
+        .circle-2 { width: 600px; height: 600px; background: #4a00e0; bottom: -200px; right: -150px; }
+        .circle-3 { width: 400px; height: 400px; background: #ff007f; top: 30%; left: 50%; opacity: 0.1; }
 
-        .bg-dot { position: absolute; width: 6px; height: 6px; background: rgba(255, 255, 255, 0.3); border-radius: 50%; animation: float-dot 5s infinite ease-in-out; }
-        @keyframes float-dot { 0%, 100% { transform: translateY(0); opacity: 0.2; } 50% { transform: translateY(-10px); opacity: 0.6; } }
+        .bg-dot { position: absolute; width: 2px; height: 2px; background: rgba(255, 255, 255, 0.8); border-radius: 50%; animation: twinkle 3s infinite ease-in-out; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 1; transform: scale(1.5); } }
 
-        @keyframes chamomile-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        @keyframes galaxy-float { 
+            0%, 100% { transform: translateY(0) rotate(0deg); } 
+            50% { transform: translateY(-12px) rotate(180deg); } 
+        }
         
-        .chamomile { 
+        @keyframes core-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 20px #ff758c; }
+        }
+        
+        .galaxy { 
             position: absolute; 
             cursor: pointer; 
             user-select: none; 
-            width: 36px; 
-            height: 36px; 
+            width: 44px; 
+            height: 44px; 
             z-index: 10; 
-            animation: chamomile-pulse 3s infinite ease-in-out;
-            transition: transform 0.3s, opacity 0.3s;
-            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6));
+            animation: galaxy-float 6s infinite ease-in-out;
+            transition: transform 0.4s, opacity 0.4s;
+            filter: drop-shadow(0 0 8px rgba(138, 43, 226, 0.6));
         }
 
-        .chamomile:hover { 
-            transform: scale(1.4) !important; 
+        .galaxy:hover { 
+            transform: scale(1.6) rotate(360deg) !important; 
             opacity: 1 !important; 
-            filter: drop-shadow(0 0 10px #ffea75);
+            filter: drop-shadow(0 0 15px #ff758c);
         }
 
-        .chamomile.hidden { 
+        .galaxy.hidden { 
             animation: none; 
             opacity: 0; 
-            transform: scale(0); 
-            transition: all 0.5s ease-out; 
+            transform: scale(0) rotate(720deg); 
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
             pointer-events: none; 
         }
 
-        .chamomile-inner {
+        .galaxy-inner {
             position: relative;
             width: 100%;
             height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,117,140,0.8) 0%, rgba(138,43,226,0.4) 40%, transparent 70%);
+            animation: core-pulse 3s infinite ease-in-out;
         }
 
-        .petal {
+        .star-orbit {
             position: absolute;
-            width: 10px;
-            height: 18px;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            animation: rotate-orbit 8s infinite linear;
+        }
+
+        @keyframes rotate-orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .orbit-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
             background: #ffffff;
             border-radius: 50%;
-            top: 9px;
-            left: 13px;
+            box-shadow: 0 0 6px #ffffff;
         }
 
-        .petal:nth-child(1) { transform: rotate(0deg) translateY(-10px); }
-        .petal:nth-child(2) { transform: rotate(45deg) translateY(-10px); }
-        .petal:nth-child(3) { transform: rotate(90deg) translateY(-10px); }
-        .petal:nth-child(4) { transform: rotate(135deg) translateY(-10px); }
-        .petal:nth-child(5) { transform: rotate(180deg) translateY(-10px); }
-        .petal:nth-child(6) { transform: rotate(225deg) translateY(-10px); }
-        .petal:nth-child(7) { transform: rotate(270deg) translateY(-10px); }
-        .petal:nth-child(8) { transform: rotate(315deg) translateY(-10px); }
+        .orbit-star:nth-child(1) { top: 2px; left: 20px; }
+        .orbit-star:nth-child(2) { bottom: 4px; right: 8px; width: 3px; height: 3px; background: #ffeb3b; }
+        .orbit-star:nth-child(3) { top: 18px; right: 2px; width: 5px; height: 5px; background: #00e5ff; }
 
-        .center-core {
+        .galaxy-core {
             position: absolute;
-            width: 14px;
-            height: 14px;
-            background: #ffcc00;
+            width: 12px;
+            height: 12px;
+            background: #ffffff;
             border-radius: 50%;
-            top: 11px;
-            left: 11px;
-            box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+            top: 16px;
+            left: 16px;
+            box-shadow: 0 0 10px #ff758c, 0 0 20px #8a2be2;
             z-index: 2;
         }
 
@@ -92,36 +111,45 @@
             top: 50%; 
             left: 50%; 
             transform: translate(-50%, -50%); 
-            background: rgba(20, 40, 20, 0.85); 
-            padding: 30px 40px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(255, 255, 255, 0.3); 
-            backdrop-filter: blur(10px); 
+            background: rgba(15, 10, 30, 0.85); 
+            padding: 35px 45px; 
+            border-radius: 24px; 
+            border: 1px solid rgba(255, 117, 140, 0.4); 
+            backdrop-filter: blur(15px); 
             text-align: center; 
             max-width: 80%; 
             opacity: 0; 
             pointer-events: none; 
-            transition: opacity 0.5s ease-in-out; 
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; 
             z-index: 20; 
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
         }
-        #message-text { font-size: 1.5rem; line-height: 1.6; color: #f2f7f0; margin: 0; }
-        #message-container.show { opacity: 1; }
+        
+        #message-container.show { 
+            opacity: 1; 
+            transform: translate(-50%, -50%) scale(1.02);
+        }
+
+        #message-text { font-size: 1.5rem; line-height: 1.6; color: #fce4ec; margin: 0; text-shadow: 0 0 10px rgba(255, 117, 140, 0.5); }
         
         #mute-btn { 
             position: fixed; 
             bottom: 30px; 
             right: 20px; 
             z-index: 9999; 
-            background: rgba(0, 0, 0, 0.5); 
-            border: 1px solid rgba(255, 255, 255, 0.5); 
-            color: white; 
+            background: rgba(20, 10, 30, 0.6); 
+            border: 1px solid rgba(255, 117, 140, 0.4); 
+            color: #fce4ec; 
             padding: 15px 25px; 
             border-radius: 25px; 
             cursor: pointer; 
             font-size: 16px; 
             backdrop-filter: blur(5px);
             touch-action: manipulation;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.2);
+            transition: background 0.3s;
         }
+        #mute-btn:hover { background: rgba(50, 20, 70, 0.8); }
     </style>
 </head>
 <body>
@@ -238,60 +266,58 @@
 
         function createBackgroundDots() {
             const container = document.getElementById('background-field');
-            for (let i = 0; i < 60; i++) {
+            for (let i = 0; i < 80; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'bg-dot';
                 dot.style.left = Math.random() * 100 + '%';
                 dot.style.top = Math.random() * 100 + '%';
-                dot.style.animationDelay = Math.random() * 5 + 's';
+                dot.style.animationDelay = Math.random() * 3 + 's';
+                dot.style.animationDuration = (Math.random() * 2 + 2) + 's';
                 container.appendChild(dot);
             }
         }
 
-        function createChamomiles() {
+        function createGalaxies() {
             const container = document.body;
             messages.forEach((msg) => {
-                const chamomile = document.createElement('div');
-                chamomile.className = 'chamomile';
-                chamomile.style.left = Math.random() * 95 + 'vw';
-                chamomile.style.top = Math.random() * 90 + 'vh';
-                chamomile.style.animationDelay = (Math.random() * 3) + 's';
+                const galaxy = document.createElement('div');
+                galaxy.className = 'galaxy';
+                galaxy.style.left = Math.random() * 95 + 'vw';
+                galaxy.style.top = Math.random() * 90 + 'vh';
+                galaxy.style.animationDelay = (Math.random() * 5) + 's';
+                galaxy.style.animationDuration = (Math.random() * 4 + 4) + 's';
                 
-                chamomile.innerHTML = `
-                    <div class="chamomile-inner">
-                        <div class="petal"></div>
-                        <div class="petal"></div>
-                        <div class="petal"></div>
-                        <div class="petal"></div>
-                        <div class="petal"></div>
-                        <div class="petal"></div>
-                        <div class="petal"></div>
-                        <div class="petal"></div>
-                        <div class="center-core"></div>
+                galaxy.innerHTML = `
+                    <div class="galaxy-inner">
+                        <div class="star-orbit">
+                            <div class="orbit-star"></div>
+                            <div class="orbit-star"></div>
+                            <div class="orbit-star"></div>
+                        </div>
+                        <div class="galaxy-core"></div>
                     </div>
                 `;
 
-                chamomile.onclick = () => {
+                galaxy.onclick = () => {
                     const msgContainer = document.getElementById('message-container');
                     document.getElementById('message-text').innerText = msg;
                     msgContainer.classList.add('show');
-                    chamomile.classList.add('hidden');
+                    galaxy.classList.add('hidden');
 
                     if (hideTimeout) clearTimeout(hideTimeout);
 
-                    // Время отображения: минимум 6 секунд, а для длинных строк еще больше
                     const displayTime = Math.max(6000, msg.length * 80);
 
                     hideTimeout = setTimeout(() => {
                         msgContainer.classList.remove('show');
                     }, displayTime);
                 };
-                container.appendChild(chamomile);
+                container.appendChild(galaxy);
             });
         }
 
         createBackgroundDots();
-        createChamomiles();
+        createGalaxies();
     </script>
 </body>
 </html>
