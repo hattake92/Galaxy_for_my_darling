@@ -9,147 +9,109 @@
             margin: 0; padding: 0; height: 100vh; overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff;
             display: flex; justify-content: center; align-items: center;
-            background: radial-gradient(circle at center, #1b0c2e 0%, #0d0614 60%, #050208 100%);
+            background: linear-gradient(135deg, #09121a 0%, #050b10 50%, #020406 100%);
         }
 
         .background-field { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: hidden; }
-        .bg-blur-circle { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none; }
+        .bg-blur-circle { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.12; pointer-events: none; }
         
-        .circle-1 { width: 500px; height: 500px; background: #8a2be2; top: -150px; left: -150px; }
-        .circle-2 { width: 600px; height: 600px; background: #4a00e0; bottom: -200px; right: -150px; }
-        .circle-3 { width: 400px; height: 400px; background: #ff007f; top: 30%; left: 50%; opacity: 0.1; }
+        .circle-1 { width: 500px; height: 500px; background: #1b4d3e; top: -100px; left: -100px; }
+        .circle-2 { width: 600px; height: 600px; background: #13334c; bottom: -150px; right: -100px; }
+        .circle-3 { width: 350px; height: 350px; background: #2e1a47; top: 40%; left: 40%; opacity: 0.08; }
 
-        .bg-dot { position: absolute; width: 2px; height: 2px; background: rgba(255, 255, 255, 0.8); border-radius: 50%; animation: twinkle 3s infinite ease-in-out; }
-        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 1; transform: scale(1.5); } }
+        .bg-dot { position: absolute; width: 3px; height: 3px; background: rgba(180, 230, 255, 0.4); border-radius: 50%; animation: twinkle 4s infinite ease-in-out; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.7; } }
 
-        @keyframes galaxy-float { 
-            0%, 100% { transform: translateY(0) rotate(0deg); } 
-            50% { transform: translateY(-12px) rotate(180deg); } 
+        @keyframes firefly-move {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(15px, -20px) scale(1.1); }
+            50% { transform: translate(-10px, 15px) scale(0.95); }
+            75% { transform: translate(20px, 10px) scale(1.05); }
         }
-        
-        @keyframes core-pulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 20px #ff758c; }
-        }
-        
-        .galaxy { 
+
+        .firefly { 
             position: absolute; 
             cursor: pointer; 
             user-select: none; 
-            width: 44px; 
-            height: 44px; 
+            width: 32px; 
+            height: 32px; 
             z-index: 10; 
-            animation: galaxy-float 6s infinite ease-in-out;
-            transition: transform 0.4s, opacity 0.4s;
-            filter: drop-shadow(0 0 8px rgba(138, 43, 226, 0.6));
+            animation: firefly-move 8s infinite ease-in-out;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
         }
 
-        .galaxy:hover { 
-            transform: scale(1.6) rotate(360deg) !important; 
-            opacity: 1 !important; 
-            filter: drop-shadow(0 0 15px #ff758c);
+        .firefly:hover { 
+            transform: scale(1.8) !important; 
         }
 
-        .galaxy.hidden { 
+        .firefly.hidden { 
             animation: none; 
             opacity: 0; 
-            transform: scale(0) rotate(720deg); 
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+            transform: scale(0); 
+            transition: all 0.4s ease-out; 
             pointer-events: none; 
         }
 
-        .galaxy-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,117,140,0.8) 0%, rgba(138,43,226,0.4) 40%, transparent 70%);
-            animation: core-pulse 3s infinite ease-in-out;
-        }
-
-        .star-orbit {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            animation: rotate-orbit 8s infinite linear;
-        }
-
-        @keyframes rotate-orbit {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .orbit-star {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 0 6px #ffffff;
-        }
-
-        .orbit-star:nth-child(1) { top: 2px; left: 20px; }
-        .orbit-star:nth-child(2) { bottom: 4px; right: 8px; width: 3px; height: 3px; background: #ffeb3b; }
-        .orbit-star:nth-child(3) { top: 18px; right: 2px; width: 5px; height: 5px; background: #00e5ff; }
-
-        .galaxy-core {
+        .firefly-core {
             position: absolute;
             width: 12px;
             height: 12px;
-            background: #ffffff;
+            background: #fffbdf;
             border-radius: 50%;
-            top: 16px;
-            left: 16px;
-            box-shadow: 0 0 10px #ff758c, 0 0 20px #8a2be2;
-            z-index: 2;
+            top: 10px;
+            left: 10px;
+            box-shadow: 0 0 12px #ffe65d, 0 0 25px #ffb300, 0 0 40px rgba(255, 179, 0, 0.6);
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 8px #ffe65d, 0 0 20px #ffb300; }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 16px #fff4a3, 0 0 35px #ffb300, 0 0 50px rgba(255, 179, 0, 0.8); }
         }
 
         #message-container { 
             position: absolute; 
             top: 50%; 
             left: 50%; 
-            transform: translate(-50%, -50%); 
-            background: rgba(15, 10, 30, 0.85); 
+            transform: translate(-50%, -50%) scale(0.9); 
+            background: rgba(12, 22, 32, 0.9); 
             padding: 35px 45px; 
-            border-radius: 24px; 
-            border: 1px solid rgba(255, 117, 140, 0.4); 
-            backdrop-filter: blur(15px); 
+            border-radius: 20px; 
+            border: 1px solid rgba(255, 230, 93, 0.3); 
+            backdrop-filter: blur(12px); 
             text-align: center; 
             max-width: 80%; 
             opacity: 0; 
             pointer-events: none; 
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; 
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; 
             z-index: 20; 
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 200, 0, 0.15);
         }
         
         #message-container.show { 
             opacity: 1; 
-            transform: translate(-50%, -50%) scale(1.02);
+            transform: translate(-50%, -50%) scale(1);
         }
 
-        #message-text { font-size: 1.5rem; line-height: 1.6; color: #fce4ec; margin: 0; text-shadow: 0 0 10px rgba(255, 117, 140, 0.5); }
+        #message-text { font-size: 1.5rem; line-height: 1.6; color: #f4f8fb; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         
         #mute-btn { 
             position: fixed; 
             bottom: 30px; 
             right: 20px; 
             z-index: 9999; 
-            background: rgba(20, 10, 30, 0.6); 
-            border: 1px solid rgba(255, 117, 140, 0.4); 
-            color: #fce4ec; 
+            background: rgba(15, 25, 35, 0.7); 
+            border: 1px solid rgba(255, 230, 93, 0.3); 
+            color: #f4f8fb; 
             padding: 15px 25px; 
             border-radius: 25px; 
             cursor: pointer; 
             font-size: 16px; 
             backdrop-filter: blur(5px);
             touch-action: manipulation;
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.2);
             transition: background 0.3s;
         }
-        #mute-btn:hover { background: rgba(50, 20, 70, 0.8); }
+        #mute-btn:hover { background: rgba(30, 50, 70, 0.9); }
     </style>
 </head>
 <body>
@@ -266,43 +228,35 @@
 
         function createBackgroundDots() {
             const container = document.getElementById('background-field');
-            for (let i = 0; i < 80; i++) {
+            for (let i = 0; i < 70; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'bg-dot';
                 dot.style.left = Math.random() * 100 + '%';
                 dot.style.top = Math.random() * 100 + '%';
-                dot.style.animationDelay = Math.random() * 3 + 's';
-                dot.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                dot.style.animationDelay = Math.random() * 4 + 's';
                 container.appendChild(dot);
             }
         }
 
-        function createGalaxies() {
+        function createFireflies() {
             const container = document.body;
             messages.forEach((msg) => {
-                const galaxy = document.createElement('div');
-                galaxy.className = 'galaxy';
-                galaxy.style.left = Math.random() * 95 + 'vw';
-                galaxy.style.top = Math.random() * 90 + 'vh';
-                galaxy.style.animationDelay = (Math.random() * 5) + 's';
-                galaxy.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                const firefly = document.createElement('div');
+                firefly.className = 'firefly';
+                firefly.style.left = Math.random() * 95 + 'vw';
+                firefly.style.top = Math.random() * 90 + 'vh';
+                firefly.style.animationDelay = (Math.random() * 6) + 's';
+                firefly.style.animationDuration = (Math.random() * 4 + 6) + 's';
                 
-                galaxy.innerHTML = `
-                    <div class="galaxy-inner">
-                        <div class="star-orbit">
-                            <div class="orbit-star"></div>
-                            <div class="orbit-star"></div>
-                            <div class="orbit-star"></div>
-                        </div>
-                        <div class="galaxy-core"></div>
-                    </div>
+                firefly.innerHTML = `
+                    <div class="firefly-core"></div>
                 `;
 
-                galaxy.onclick = () => {
+                firefly.onclick = () => {
                     const msgContainer = document.getElementById('message-container');
                     document.getElementById('message-text').innerText = msg;
                     msgContainer.classList.add('show');
-                    galaxy.classList.add('hidden');
+                    firefly.classList.add('hidden');
 
                     if (hideTimeout) clearTimeout(hideTimeout);
 
@@ -312,12 +266,12 @@
                         msgContainer.classList.remove('show');
                     }, displayTime);
                 };
-                container.appendChild(galaxy);
+                container.appendChild(firefly);
             });
         }
 
         createBackgroundDots();
-        createGalaxies();
+        createFireflies();
     </script>
 </body>
 </html>
