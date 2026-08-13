@@ -35,7 +35,7 @@
             width: 40px; 
             height: 55px; 
             z-index: 10; 
-            animation: float-lantern 14s infinite linear;
+            animation: float-lantern infinite linear;
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
         }
 
@@ -51,7 +51,6 @@
             pointer-events: none; 
         }
 
-        /* Тело фонарика */
         .lantern-body {
             position: absolute;
             width: 100%;
@@ -67,7 +66,6 @@
             50% { box-shadow: 0 0 25px #ffb703, 0 0 40px #fb8500, inset 0 0 20px rgba(255, 255, 255, 0.6); }
         }
 
-        /* Рамка фонарика */
         .lantern-top, .lantern-bottom {
             position: absolute;
             background: #3d0000;
@@ -249,13 +247,16 @@
 
         function createLanterns() {
             const container = document.body;
-            messages.forEach((msg, index) => {
+            messages.forEach((msg) => {
                 const lantern = document.createElement('div');
                 lantern.className = 'lantern';
-                lantern.style.left = (Math.random() * 90 + 5) + 'vw';
-                // Равномерно распределяем старт по времени анимации, чтобы они не летели все разом
-                lantern.style.animationDelay = (index * 0.4) + 's';
-                lantern.style.animationDuration = (Math.random() * 6 + 12) + 's';
+                lantern.style.left = (Math.random() * 92 + 4) + 'vw';
+                
+                const duration = Math.random() * 6 + 12; // от 12 до 18 секунд
+                const delay = -Math.random() * duration; // отрицательная задержка для случайной позиции на старте
+                
+                lantern.style.animationDuration = duration + 's';
+                lantern.style.animationDelay = delay + 's';
                 
                 lantern.innerHTML = `
                     <div class="lantern-top"></div>
