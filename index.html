@@ -9,120 +9,93 @@
             margin: 0; padding: 0; height: 100vh; overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff;
             display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(135deg, #071017 0%, #03070b 50%, #010305 100%);
+            background: linear-gradient(to top, #1f1124 0%, #12091c 40%, #08040c 100%);
         }
 
         .background-field { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: hidden; }
-        .bg-blur-circle { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.1; pointer-events: none; }
+        .bg-blur-circle { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.15; pointer-events: none; }
         
-        .circle-1 { width: 500px; height: 500px; background: #14382c; top: -100px; left: -100px; }
-        .circle-2 { width: 600px; height: 600px; background: #0d2538; bottom: -150px; right: -100px; }
-        .circle-3 { width: 350px; height: 350px; background: #221236; top: 40%; left: 40%; opacity: 0.08; }
+        .circle-1 { width: 600px; height: 600px; background: #ff7b00; bottom: -200px; left: 20%; }
+        .circle-2 { width: 500px; height: 500px; background: #9d4edd; top: -100px; right: -100px; }
 
-        .bg-dot { position: absolute; width: 3px; height: 3px; background: rgba(180, 230, 255, 0.4); border-radius: 50%; animation: twinkle 4s infinite ease-in-out; }
-        @keyframes twinkle { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.7; } }
+        .bg-star { position: absolute; width: 2px; height: 2px; background: #ffffff; border-radius: 50%; opacity: 0.5; animation: star-twinkle 3s infinite ease-in-out; }
+        @keyframes star-twinkle { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 0.9; transform: scale(1.4); } }
 
-        @keyframes firefly-flight {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            20% { transform: translate(25px, -30px) rotate(8deg); }
-            40% { transform: translate(-20px, -15px) rotate(-10deg); }
-            60% { transform: translate(15px, 25px) rotate(5deg); }
-            80% { transform: translate(-15px, 10px) rotate(-5deg); }
+        @keyframes float-lantern {
+            0% { transform: translateY(105vh) translateX(0) scale(0.9); opacity: 0; }
+            10% { opacity: 0.9; }
+            90% { opacity: 0.9; }
+            100% { transform: translateY(-15vh) translateX(30px) scale(1); opacity: 0; }
         }
 
-        .firefly { 
+        .lantern { 
             position: absolute; 
             cursor: pointer; 
             user-select: none; 
-            width: 44px; 
-            height: 44px; 
+            width: 40px; 
+            height: 55px; 
             z-index: 10; 
-            animation: firefly-flight 10s infinite ease-in-out;
+            animation: float-lantern 14s infinite linear;
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
         }
 
-        .firefly:hover { 
-            transform: scale(1.6) !important; 
+        .lantern:hover { 
+            transform: scale(1.5) !important; 
         }
 
-        .firefly.hidden { 
+        .lantern.hidden { 
             animation: none; 
             opacity: 0; 
             transform: scale(0); 
-            transition: all 0.4s ease-out; 
+            transition: all 0.5s ease-out; 
             pointer-events: none; 
         }
 
-        /* Тело светлячка */
-        .firefly-body {
+        /* Тело фонарика */
+        .lantern-body {
             position: absolute;
-            width: 8px;
-            height: 14px;
-            background: #ffe875;
-            border-radius: 50%;
-            top: 15px;
-            left: 18px;
-            box-shadow: 0 0 10px #ffc107, 0 0 22px #ff9800, 0 0 35px rgba(255, 152, 0, 0.7);
-            animation: glow-abdomen 2s infinite ease-in-out;
-            z-index: 2;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffb703 0%, #fb8500 50%, #d90429 100%);
+            border-radius: 20px 20px 10px 10px;
+            box-shadow: 0 0 15px #ffb703, inset 0 0 15px rgba(255, 255, 255, 0.4);
+            animation: pulse-lantern 2s infinite ease-in-out;
         }
 
-        @keyframes glow-abdomen {
-            0%, 100% { opacity: 0.7; transform: scale(0.9); box-shadow: 0 0 8px #ffc107, 0 0 18px #ff9800; }
-            50% { opacity: 1; transform: scale(1.25); box-shadow: 0 0 14px #fff1a8, 0 0 28px #ffc107, 0 0 45px rgba(255, 193, 7, 0.9); }
+        @keyframes pulse-lantern {
+            0%, 100% { box-shadow: 0 0 12px #ffb703, inset 0 0 10px rgba(255, 255, 255, 0.3); }
+            50% { box-shadow: 0 0 25px #ffb703, 0 0 40px #fb8500, inset 0 0 20px rgba(255, 255, 255, 0.6); }
         }
 
-        /* Крылышки светлячка */
-        .wing {
+        /* Рамка фонарика */
+        .lantern-top, .lantern-bottom {
             position: absolute;
-            width: 10px;
-            height: 14px;
-            background: rgba(255, 255, 255, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50% 50% 20% 20%;
-            top: 12px;
-            z-index: 1;
+            background: #3d0000;
+            left: 5px;
+            right: 5px;
+            height: 4px;
+            border-radius: 2px;
         }
-
-        .wing.left {
-            left: 10px;
-            transform-origin: top right;
-            animation: flap-left 0.15s infinite alternate ease-in-out;
-        }
-
-        .wing.right {
-            right: 10px;
-            transform-origin: top left;
-            animation: flap-right 0.15s infinite alternate ease-in-out;
-        }
-
-        @keyframes flap-left {
-            0% { transform: rotate(-15deg); }
-            100% { transform: rotate(-45deg); }
-        }
-
-        @keyframes flap-right {
-            0% { transform: rotate(15deg); }
-            100% { transform: rotate(45deg); }
-        }
+        .lantern-top { top: -2px; }
+        .lantern-bottom { bottom: -2px; }
 
         #message-container { 
             position: absolute; 
             top: 50%; 
             left: 50%; 
             transform: translate(-50%, -50%) scale(0.9); 
-            background: rgba(10, 18, 26, 0.92); 
+            background: rgba(25, 12, 35, 0.92); 
             padding: 35px 45px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(255, 215, 0, 0.35); 
-            backdrop-filter: blur(12px); 
+            border-radius: 22px; 
+            border: 1px solid rgba(255, 183, 3, 0.4); 
+            backdrop-filter: blur(15px); 
             text-align: center; 
             max-width: 80%; 
             opacity: 0; 
             pointer-events: none; 
             transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; 
             z-index: 20; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 193, 7, 0.15);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 183, 3, 0.2);
         }
         
         #message-container.show { 
@@ -130,16 +103,16 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
-        #message-text { font-size: 1.5rem; line-height: 1.6; color: #f4f8fb; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        #message-text { font-size: 1.5rem; line-height: 1.6; color: #fff3b0; margin: 0; text-shadow: 0 2px 5px rgba(0,0,0,0.6); }
         
         #mute-btn { 
             position: fixed; 
             bottom: 30px; 
             right: 20px; 
             z-index: 9999; 
-            background: rgba(12, 20, 28, 0.7); 
-            border: 1px solid rgba(255, 215, 0, 0.35); 
-            color: #f4f8fb; 
+            background: rgba(30, 15, 45, 0.7); 
+            border: 1px solid rgba(255, 183, 3, 0.4); 
+            color: #fff3b0; 
             padding: 15px 25px; 
             border-radius: 25px; 
             cursor: pointer; 
@@ -148,7 +121,7 @@
             touch-action: manipulation;
             transition: background 0.3s;
         }
-        #mute-btn:hover { background: rgba(25, 40, 55, 0.9); }
+        #mute-btn:hover { background: rgba(50, 25, 75, 0.9); }
     </style>
 </head>
 <body>
@@ -162,7 +135,6 @@
     <div class="background-field" id="background-field">
         <div class="bg-blur-circle circle-1"></div>
         <div class="bg-blur-circle circle-2"></div>
-        <div class="bg-blur-circle circle-3"></div>
     </div>
 
     <div id="message-container"><p id="message-text"></p></div>
@@ -263,39 +235,39 @@
             isPlaying = !isPlaying;
         };
 
-        function createBackgroundDots() {
+        function createStars() {
             const container = document.getElementById('background-field');
-            for (let i = 0; i < 70; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'bg-dot';
-                dot.style.left = Math.random() * 100 + '%';
-                dot.style.top = Math.random() * 100 + '%';
-                dot.style.animationDelay = Math.random() * 4 + 's';
-                container.appendChild(dot);
+            for (let i = 0; i < 60; i++) {
+                const star = document.createElement('div');
+                star.className = 'bg-star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(star);
             }
         }
 
-        function createFireflies() {
+        function createLanterns() {
             const container = document.body;
-            messages.forEach((msg) => {
-                const firefly = document.createElement('div');
-                firefly.className = 'firefly';
-                firefly.style.left = Math.random() * 95 + 'vw';
-                firefly.style.top = Math.random() * 90 + 'vh';
-                firefly.style.animationDelay = (Math.random() * 6) + 's';
-                firefly.style.animationDuration = (Math.random() * 5 + 7) + 's';
+            messages.forEach((msg, index) => {
+                const lantern = document.createElement('div');
+                lantern.className = 'lantern';
+                lantern.style.left = (Math.random() * 90 + 5) + 'vw';
+                // Равномерно распределяем старт по времени анимации, чтобы они не летели все разом
+                lantern.style.animationDelay = (index * 0.4) + 's';
+                lantern.style.animationDuration = (Math.random() * 6 + 12) + 's';
                 
-                firefly.innerHTML = `
-                    <div class="wing left"></div>
-                    <div class="wing right"></div>
-                    <div class="firefly-body"></div>
+                lantern.innerHTML = `
+                    <div class="lantern-top"></div>
+                    <div class="lantern-body"></div>
+                    <div class="lantern-bottom"></div>
                 `;
 
-                firefly.onclick = () => {
+                lantern.onclick = () => {
                     const msgContainer = document.getElementById('message-container');
                     document.getElementById('message-text').innerText = msg;
                     msgContainer.classList.add('show');
-                    firefly.classList.add('hidden');
+                    lantern.classList.add('hidden');
 
                     if (hideTimeout) clearTimeout(hideTimeout);
 
@@ -305,12 +277,12 @@
                         msgContainer.classList.remove('show');
                     }, displayTime);
                 };
-                container.appendChild(firefly);
+                container.appendChild(lantern);
             });
         }
 
-        createBackgroundDots();
-        createFireflies();
+        createStars();
+        createLanterns();
     </script>
 </body>
 </html>
